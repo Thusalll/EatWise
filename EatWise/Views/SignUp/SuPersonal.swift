@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  SuPersonal.swift
 //  EatWise
 //
 //  Created by Thusal Athauda on 21/04/2024.
@@ -7,32 +7,42 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct SuPersonal: View {
     @State private var password: String = ""
+    @State private var presentNextView = false
+    
     var body: some View {
         NavigationStack {
             VStack {
                 // Eatwise Title
                 Title()
-                    .padding([.bottom], 70)
+                    .padding([.bottom], 45)
                 
-                // Login Title
+                // Signup Title
                 HStack {
-                    Text("Log in")
+                    Text("Sign Up")
                         .font(
                             Font.custom("Nunito-Bold", size: 50)
                         )
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color("TextColor"))
-                        .frame(width: 145, height: 60)
-                        .padding([.bottom], 80)
+                        .frame(width: 195, height: 60)
+                        .padding([.bottom], 35)
                     Spacer()
                 }
                 
+                // First Name Textfield
+                textField(placeholder: "First Name")
+                    .padding([.bottom], 20)
+                // Last Name Textfield
+                textField(placeholder: "Last Name")
+                    .padding([.bottom], 20)
+                // Age Textfield
+                textField(placeholder: "Age")
+                    .padding([.bottom], 20)
                 // Email Textfield
                 textField(placeholder: "Email")
-                    .padding([.bottom], 50)
-                
+                    .padding([.bottom], 20)
                 // Password Textfield
                 SecureField(
                     "Password",
@@ -41,6 +51,10 @@ struct LoginView: View {
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .padding()
+                .font(
+                    Font.custom("Nunito-Bold", size: 20)
+                )
+                .background(Color("TextFieldBG"))
                 .overlay(
                     GeometryReader { geometry in
                         Rectangle()
@@ -49,32 +63,41 @@ struct LoginView: View {
                             .frame(width: geometry.size.width, height: 1)
                     }
                 )
-                .padding([.bottom], 80)
-                
-                // Login Button
-                button(text: "Login", action: {})
-                
                 Spacer()
                 
-                // sign up label
+                // Next Button
+                button(text: "Next", action: {
+                    presentNextView.toggle()
+                })
+                .padding([.top], 40)
+                .padding(.bottom)
+                
+                //Spacer()
+                
+                // Login label
                 HStack {
-                    Text("Don't have an account?")
+                    Text("Already have an account?")
                         .foregroundStyle(Color("TextColor"))
                         .font(Font.custom("Nunito", size: 14))
-                    NavigationLink(destination: SuPersonal()) {
+                    NavigationLink(destination: LoginView()) {
                         Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Text("Sign Up")
+                            Text("Log In")
                                 .foregroundStyle(Color("TextColor"))
                                 .font(Font.custom("Nunito-Bold", size: 14))
                         })
                     }
                 }
             }
+            .padding(.bottom)
             .padding([.top, .horizontal], 40)
+            .navigationDestination(isPresented: $presentNextView){
+                SuBmi()
+            }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
 
 #Preview {
-    LoginView()
+    SuPersonal()
 }
