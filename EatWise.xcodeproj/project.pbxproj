@@ -40,6 +40,10 @@
 		F2815EDC2BD44DB2004BFE37 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F2815EDB2BD44DB2004BFE37 /* FirebaseStorage */; };
 		F2815EDE2BD44DB2004BFE37 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = F2815EDD2BD44DB2004BFE37 /* FirebaseStorageCombine-Community */; };
 		F2815EE12BD45214004BFE37 /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2815EE02BD45214004BFE37 /* Nunito-Regular.ttf */; };
+		F2815EE62BD52B9E004BFE37 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EE52BD52B9E004BFE37 /* LoginView.swift */; };
+		F2815EE82BD52BE7004BFE37 /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EE72BD52BE7004BFE37 /* Title.swift */; };
+		F2815EEA2BD52C0B004BFE37 /* textField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EE92BD52C0B004BFE37 /* textField.swift */; };
+		F2815EEC2BD52C6E004BFE37 /* button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EEB2BD52C6E004BFE37 /* button.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +55,10 @@
 		F2815EA62BD44C5A004BFE37 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2815EE02BD45214004BFE37 /* Nunito-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		F2815EE22BD4526A004BFE37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F2815EE52BD52B9E004BFE37 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		F2815EE72BD52BE7004BFE37 /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
+		F2815EE92BD52C0B004BFE37 /* textField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = textField.swift; sourceTree = "<group>"; };
+		F2815EEB2BD52C6E004BFE37 /* button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = button.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +121,7 @@
 				F2815EE22BD4526A004BFE37 /* Info.plist */,
 				F2815EA62BD44C5A004BFE37 /* GoogleService-Info.plist */,
 				F2815EDF2BD451E4004BFE37 /* Fonts */,
+				F2815EE42BD52B5E004BFE37 /* Views */,
 				F2815E982BD44A84004BFE37 /* EatWiseApp.swift */,
 				F2815E9A2BD44A84004BFE37 /* ContentView.swift */,
 				F2815E9C2BD44A85004BFE37 /* Assets.xcassets */,
@@ -135,6 +144,25 @@
 				F2815EE02BD45214004BFE37 /* Nunito-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		F2815EE32BD52B51004BFE37 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				F2815EE52BD52B9E004BFE37 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		F2815EE42BD52B5E004BFE37 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F2815EE32BD52B51004BFE37 /* Login */,
+				F2815EE72BD52BE7004BFE37 /* Title.swift */,
+				F2815EE92BD52C0B004BFE37 /* textField.swift */,
+				F2815EEB2BD52C6E004BFE37 /* button.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,7 +269,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2815EE82BD52BE7004BFE37 /* Title.swift in Sources */,
+				F2815EEC2BD52C6E004BFE37 /* button.swift in Sources */,
+				F2815EE62BD52B9E004BFE37 /* LoginView.swift in Sources */,
 				F2815E9B2BD44A84004BFE37 /* ContentView.swift in Sources */,
+				F2815EEA2BD52C0B004BFE37 /* textField.swift in Sources */,
 				F2815E992BD44A84004BFE37 /* EatWiseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

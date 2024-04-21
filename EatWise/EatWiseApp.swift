@@ -15,7 +15,7 @@ struct EatWiseApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }
