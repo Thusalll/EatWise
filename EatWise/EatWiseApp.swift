@@ -15,7 +15,8 @@ struct EatWiseApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            //LoginView()
+            NavBar()
         }
     }
 }

@@ -51,6 +51,13 @@
 		F2815EF92BD5326D004BFE37 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EF82BD5326D004BFE37 /* RadioButton.swift */; };
 		F2815EFB2BD533E0004BFE37 /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2815EFA2BD533E0004BFE37 /* Nunito-ExtraBold.ttf */; };
 		F2815EFD2BD533F7004BFE37 /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2815EFC2BD533F7004BFE37 /* Nunito-Bold.ttf */; };
+		F2815F002BD539AC004BFE37 /* DailyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815EFF2BD539AC004BFE37 /* DailyPlanView.swift */; };
+		F2815F022BD539BB004BFE37 /* NutritionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F012BD539BB004BFE37 /* NutritionCard.swift */; };
+		F2815F042BD539C2004BFE37 /* MealCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F032BD539C2004BFE37 /* MealCard.swift */; };
+		F2815F062BD539CC004BFE37 /* NavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F052BD539CC004BFE37 /* NavBar.swift */; };
+		F2815F082BD539DA004BFE37 /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F072BD539DA004BFE37 /* RecipeView.swift */; };
+		F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F092BD539E2004BFE37 /* NewPlan.swift */; };
+		F2815F0C2BD539F2004BFE37 /* WeeklyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +80,13 @@
 		F2815EF82BD5326D004BFE37 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		F2815EFA2BD533E0004BFE37 /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
 		F2815EFC2BD533F7004BFE37 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		F2815EFF2BD539AC004BFE37 /* DailyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyPlanView.swift; sourceTree = "<group>"; };
+		F2815F012BD539BB004BFE37 /* NutritionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionCard.swift; sourceTree = "<group>"; };
+		F2815F032BD539C2004BFE37 /* MealCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealCard.swift; sourceTree = "<group>"; };
+		F2815F052BD539CC004BFE37 /* NavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavBar.swift; sourceTree = "<group>"; };
+		F2815F072BD539DA004BFE37 /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
+		F2815F092BD539E2004BFE37 /* NewPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlan.swift; sourceTree = "<group>"; };
+		F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +186,7 @@
 		F2815EE42BD52B5E004BFE37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F2815EFE2BD5399D004BFE37 /* Home */,
 				F2815EED2BD531A4004BFE37 /* SignUp */,
 				F2815EE32BD52B51004BFE37 /* Login */,
 				F2815EE72BD52BE7004BFE37 /* Title.swift */,
@@ -192,6 +207,20 @@
 				F2815EF62BD5321C004BFE37 /* SuAllergies.swift */,
 			);
 			path = SignUp;
+			sourceTree = "<group>";
+		};
+		F2815EFE2BD5399D004BFE37 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F2815EFF2BD539AC004BFE37 /* DailyPlanView.swift */,
+				F2815F012BD539BB004BFE37 /* NutritionCard.swift */,
+				F2815F032BD539C2004BFE37 /* MealCard.swift */,
+				F2815F052BD539CC004BFE37 /* NavBar.swift */,
+				F2815F072BD539DA004BFE37 /* RecipeView.swift */,
+				F2815F092BD539E2004BFE37 /* NewPlan.swift */,
+				F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -302,14 +331,21 @@
 			files = (
 				F2815EF92BD5326D004BFE37 /* RadioButton.swift in Sources */,
 				F2815EE82BD52BE7004BFE37 /* Title.swift in Sources */,
+				F2815F042BD539C2004BFE37 /* MealCard.swift in Sources */,
 				F2815EEC2BD52C6E004BFE37 /* button.swift in Sources */,
+				F2815F022BD539BB004BFE37 /* NutritionCard.swift in Sources */,
+				F2815F062BD539CC004BFE37 /* NavBar.swift in Sources */,
+				F2815F002BD539AC004BFE37 /* DailyPlanView.swift in Sources */,
 				F2815EF72BD5321C004BFE37 /* SuAllergies.swift in Sources */,
 				F2815EE62BD52B9E004BFE37 /* LoginView.swift in Sources */,
 				F2815EEF2BD531EF004BFE37 /* SuPersonal.swift in Sources */,
 				F2815EEA2BD52C0B004BFE37 /* textField.swift in Sources */,
 				F2815EF32BD53207004BFE37 /* SuDiet.swift in Sources */,
+				F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */,
 				F2815E992BD44A84004BFE37 /* EatWiseApp.swift in Sources */,
 				F2815EF12BD531FC004BFE37 /* SuBmi.swift in Sources */,
+				F2815F082BD539DA004BFE37 /* RecipeView.swift in Sources */,
+				F2815F0C2BD539F2004BFE37 /* WeeklyPlanView.swift in Sources */,
 				F2815EF52BD53212004BFE37 /* SuGoal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
