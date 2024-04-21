@@ -9,7 +9,7 @@ import Foundation
 
 struct WeightPoint: Identifiable {
     
-    var id = UUID().uuidString
+    var id = UUID()
     var weight: Double
-    var day: String
+    var day: Date
 }

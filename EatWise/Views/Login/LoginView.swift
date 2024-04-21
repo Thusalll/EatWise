@@ -61,16 +61,16 @@ struct LoginView: View {
                     Text("Don't have an account?")
                         .foregroundStyle(Color("TextColor"))
                         .font(Font.custom("Nunito", size: 14))
+                    
                     NavigationLink(destination: SuPersonal()) {
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Text("Sign Up")
-                                .foregroundStyle(Color("TextColor"))
-                                .font(Font.custom("Nunito-Bold", size: 14))
-                        })
+                        Text("Sign Up")
+                            .foregroundStyle(Color("TextColor"))
+                            .font(Font.custom("Nunito-Bold", size: 14))
                     }
                 }
             }
             .padding([.top, .horizontal], 40)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }

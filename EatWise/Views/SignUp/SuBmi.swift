@@ -81,11 +81,12 @@ struct SuBmi: View {
                 Text("Already have an account?")
                     .foregroundStyle(Color("TextColor"))
                     .font(Font.custom("Nunito", size: 14))
-                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                
+                NavigationLink(destination: LoginView()) {
                     Text("Log In")
                         .foregroundStyle(Color("TextColor"))
                         .font(Font.custom("Nunito-Bold", size: 14))
-                })
+                }
             }
 
         }

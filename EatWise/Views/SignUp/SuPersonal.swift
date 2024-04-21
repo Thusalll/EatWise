@@ -54,7 +54,6 @@ struct SuPersonal: View {
                 .font(
                     Font.custom("Nunito-Bold", size: 20)
                 )
-                .background(Color("TextFieldBG"))
                 .overlay(
                     GeometryReader { geometry in
                         Rectangle()
@@ -79,12 +78,11 @@ struct SuPersonal: View {
                     Text("Already have an account?")
                         .foregroundStyle(Color("TextColor"))
                         .font(Font.custom("Nunito", size: 14))
+                    
                     NavigationLink(destination: LoginView()) {
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Text("Log In")
-                                .foregroundStyle(Color("TextColor"))
-                                .font(Font.custom("Nunito-Bold", size: 14))
-                        })
+                        Text("Log In")
+                            .foregroundStyle(Color("TextColor"))
+                            .font(Font.custom("Nunito-Bold", size: 14))
                     }
                 }
             }

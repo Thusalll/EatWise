@@ -15,6 +15,7 @@ struct ProfileView: View {
                 Title()
                 
                 WeightGraph()
+                    //.frame(height: 250)
                 
                 List {
                     NavigationLink(destination: AllergyView()) {

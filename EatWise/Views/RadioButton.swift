@@ -27,7 +27,7 @@ struct RadioButton: View {
             selectedOption = option
         }
         .frame(width: 310, height: 60)
-                .background(selectedOption == option ? Color("SecondaryGreen") : Color("TextFieldBG"))
+        .background(selectedOption == option ? Color("SecondaryGreen") : .clear)
                 .overlay(
                     Rectangle()
                         .inset(by: 0.5)
