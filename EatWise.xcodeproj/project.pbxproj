@@ -58,6 +58,14 @@
 		F2815F082BD539DA004BFE37 /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F072BD539DA004BFE37 /* RecipeView.swift */; };
 		F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F092BD539E2004BFE37 /* NewPlan.swift */; };
 		F2815F0C2BD539F2004BFE37 /* WeeklyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */; };
+		F2815F0F2BD53E45004BFE37 /* WeightGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F0E2BD53E45004BFE37 /* WeightGraph.swift */; };
+		F2815F112BD53E53004BFE37 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F102BD53E53004BFE37 /* ProfileView.swift */; };
+		F2815F132BD53E60004BFE37 /* AllergyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F122BD53E60004BFE37 /* AllergyView.swift */; };
+		F2815F152BD53E79004BFE37 /* SaveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F142BD53E79004BFE37 /* SaveButton.swift */; };
+		F2815F172BD53E86004BFE37 /* DietView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F162BD53E86004BFE37 /* DietView.swift */; };
+		F2815F192BD53E90004BFE37 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F182BD53E90004BFE37 /* GoalView.swift */; };
+		F2815F1B2BD53EAC004BFE37 /* PersonalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F1A2BD53EAC004BFE37 /* PersonalInfoView.swift */; };
+		F2815F1E2BD54657004BFE37 /* WeightModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815F1D2BD54657004BFE37 /* WeightModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +95,14 @@
 		F2815F072BD539DA004BFE37 /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
 		F2815F092BD539E2004BFE37 /* NewPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPlan.swift; sourceTree = "<group>"; };
 		F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
+		F2815F0E2BD53E45004BFE37 /* WeightGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightGraph.swift; sourceTree = "<group>"; };
+		F2815F102BD53E53004BFE37 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		F2815F122BD53E60004BFE37 /* AllergyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllergyView.swift; sourceTree = "<group>"; };
+		F2815F142BD53E79004BFE37 /* SaveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveButton.swift; sourceTree = "<group>"; };
+		F2815F162BD53E86004BFE37 /* DietView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DietView.swift; sourceTree = "<group>"; };
+		F2815F182BD53E90004BFE37 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
+		F2815F1A2BD53EAC004BFE37 /* PersonalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoView.swift; sourceTree = "<group>"; };
+		F2815F1D2BD54657004BFE37 /* WeightModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +165,7 @@
 				F2815EE22BD4526A004BFE37 /* Info.plist */,
 				F2815EA62BD44C5A004BFE37 /* GoogleService-Info.plist */,
 				F2815EDF2BD451E4004BFE37 /* Fonts */,
+				F2815F1C2BD5462D004BFE37 /* Models */,
 				F2815EE42BD52B5E004BFE37 /* Views */,
 				F2815E982BD44A84004BFE37 /* EatWiseApp.swift */,
 				F2815E9C2BD44A85004BFE37 /* Assets.xcassets */,
@@ -186,6 +203,7 @@
 		F2815EE42BD52B5E004BFE37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F2815F0D2BD53E28004BFE37 /* Profile */,
 				F2815EFE2BD5399D004BFE37 /* Home */,
 				F2815EED2BD531A4004BFE37 /* SignUp */,
 				F2815EE32BD52B51004BFE37 /* Login */,
@@ -221,6 +239,28 @@
 				F2815F0B2BD539F2004BFE37 /* WeeklyPlanView.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		F2815F0D2BD53E28004BFE37 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F2815F0E2BD53E45004BFE37 /* WeightGraph.swift */,
+				F2815F102BD53E53004BFE37 /* ProfileView.swift */,
+				F2815F122BD53E60004BFE37 /* AllergyView.swift */,
+				F2815F142BD53E79004BFE37 /* SaveButton.swift */,
+				F2815F162BD53E86004BFE37 /* DietView.swift */,
+				F2815F182BD53E90004BFE37 /* GoalView.swift */,
+				F2815F1A2BD53EAC004BFE37 /* PersonalInfoView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		F2815F1C2BD5462D004BFE37 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F2815F1D2BD54657004BFE37 /* WeightModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,16 +376,24 @@
 				F2815F022BD539BB004BFE37 /* NutritionCard.swift in Sources */,
 				F2815F062BD539CC004BFE37 /* NavBar.swift in Sources */,
 				F2815F002BD539AC004BFE37 /* DailyPlanView.swift in Sources */,
+				F2815F192BD53E90004BFE37 /* GoalView.swift in Sources */,
+				F2815F0F2BD53E45004BFE37 /* WeightGraph.swift in Sources */,
 				F2815EF72BD5321C004BFE37 /* SuAllergies.swift in Sources */,
+				F2815F1B2BD53EAC004BFE37 /* PersonalInfoView.swift in Sources */,
 				F2815EE62BD52B9E004BFE37 /* LoginView.swift in Sources */,
 				F2815EEF2BD531EF004BFE37 /* SuPersonal.swift in Sources */,
 				F2815EEA2BD52C0B004BFE37 /* textField.swift in Sources */,
+				F2815F1E2BD54657004BFE37 /* WeightModel.swift in Sources */,
+				F2815F112BD53E53004BFE37 /* ProfileView.swift in Sources */,
 				F2815EF32BD53207004BFE37 /* SuDiet.swift in Sources */,
+				F2815F172BD53E86004BFE37 /* DietView.swift in Sources */,
 				F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */,
 				F2815E992BD44A84004BFE37 /* EatWiseApp.swift in Sources */,
 				F2815EF12BD531FC004BFE37 /* SuBmi.swift in Sources */,
 				F2815F082BD539DA004BFE37 /* RecipeView.swift in Sources */,
+				F2815F152BD53E79004BFE37 /* SaveButton.swift in Sources */,
 				F2815F0C2BD539F2004BFE37 /* WeeklyPlanView.swift in Sources */,
+				F2815F132BD53E60004BFE37 /* AllergyView.swift in Sources */,
 				F2815EF52BD53212004BFE37 /* SuGoal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

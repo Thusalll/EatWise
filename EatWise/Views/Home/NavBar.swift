@@ -15,10 +15,10 @@ struct NavBar: View {
                         .tabItem {
                             Label("Home", systemImage: "house")
                         }
-//                    ProfileScreen()
-//                        .tabItem {
-//                            Label("Profile", systemImage: "person")
-//                        }
+                    ProfileView()
+                        .tabItem {
+                            Label("Profile", systemImage: "person")
+                        }
                 }
             }
             .toolbarBackground(.visible, for: .tabBar)
