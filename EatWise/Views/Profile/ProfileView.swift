@@ -127,6 +127,7 @@ struct AddWeightPopup: View {
     @Binding var inputWeight: String
     @Binding var inputDate: Date
     @Binding var isAddingWeight: Bool
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         NavigationView {
@@ -137,15 +138,22 @@ struct AddWeightPopup: View {
                 DatePicker("Date", selection: $inputDate, in: ...Date(), displayedComponents: .date)
                 
                 Button("Save Weight") {
-                    // Code to save the weight and date
-                    // Make sure to validate the date and weight
+                    print(userViewModel.userModel?.weight ?? [])
+                    // save the weight and date
+                    if !inputWeight.isEmpty {
+                        Task{
+                            await userViewModel.updateUserWeight(newWeight: Weight(id: UUID().uuidString, weight: inputWeight, day: inputDate))
+                        }
+                        isAddingWeight = false
+                    }
                 }
             }
             .navigationBarTitle("Add Weight", displayMode: .inline)
             .navigationBarItems(trailing: Button("Done") {
-                // Code to close the sheet
+                // close the sheet
                 isAddingWeight = false
             })
         }
+        .accentColor(.primaryGreen)
     }
 }

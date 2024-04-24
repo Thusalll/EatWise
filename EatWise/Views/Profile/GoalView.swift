@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct GoalView: View {
-    @State private var selectedOption = ""
+    @State private var selectedOption: String?
+    @State private var selectedOptions: [String]? = nil
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var options: [String] = ["Loose Weight", "Maintain Weight", "Gain Weight"]
     
@@ -42,9 +44,8 @@ struct GoalView: View {
                 }
                 .padding(.top)
                 
-                
                 ForEach(options, id: \.self) { option in
-                    //RadioButton(option: option)
+                    RadioButton(selectedOption: $selectedOption, selectedOptions: $selectedOptions, isSingleSelection: true, option: option)
                 }
                 .padding(.top)
                 .listStyle(.plain)
@@ -53,11 +54,18 @@ struct GoalView: View {
                 
                 Spacer()
                 
-                SaveButton(text: "Save", action: {})
+                SaveButton(text: "Save", action: {
+                    print(selectedOption)
+                })
                     .padding()
                 
             }
             .padding(.horizontal)
+            .onAppear {
+                // Initialize selectedOption with the value from ViewModel
+                selectedOption = userViewModel.userModel?.goal
+                print(selectedOption)
+            }
         
         
     }

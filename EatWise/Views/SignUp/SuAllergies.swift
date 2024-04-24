@@ -78,7 +78,7 @@ struct SuAllergies: View {
                                                            lastname: lastName,
                                                            age: age,
                                                            height: height,
-                                                           weight: weight,
+                                                           weight: [Weight(id: UUID().uuidString, weight: weight, day: Date())],
                                                            bmi: bmi,
                                                            bmiMessage: bmiMessage,
                                                            goal: goal,

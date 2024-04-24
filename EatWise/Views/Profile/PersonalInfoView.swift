@@ -69,7 +69,9 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                     Section {
-                        TextField((user.weight + user.weightType), text: $weight)
+                        if let latestWeightEntry = user.latestWeightEntry {
+                            TextField("\(latestWeightEntry.weight) \(user.weightType)", text: $weight)
+                        }
                     } header: {
                         Text("Weight")
                             .font(
@@ -96,19 +98,16 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                 }
-                 .listStyle(.plain)
-                //.background(Color.secondaryGreen)
-                
-                
-                
-                //Spacer()
-                
+                .listStyle(.plain)
             }
             .padding(.horizontal)
         }
-            
-        
-        
+    }
+}
+
+extension UserModel {
+    var latestWeightEntry: Weight? {
+        return weight.max(by: { $0.day < $1.day })
     }
 }
 

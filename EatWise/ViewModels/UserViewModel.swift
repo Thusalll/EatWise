@@ -37,7 +37,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    func createUser (withEmail email: String, password: String, firstName: String, lastname: String, age: String, height: String, weight: String, bmi: String, bmiMessage: String, goal: String, diet: String, allergies: [String], weightType: String, heightType: String) async throws {
+    func createUser (withEmail email: String, password: String, firstName: String, lastname: String, age: String, height: String, weight: [Weight], bmi: String, bmiMessage: String, goal: String, diet: String, allergies: [String], weightType: String, heightType: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
@@ -67,6 +67,29 @@ class UserViewModel: ObservableObject {
         self.userModel = try? snapshot.data(as: UserModel.self)
         
         //print("DEBUG: Current user is \(self.userModel)")
+    }
+    
+    func updateUserWeight(newWeight: Weight) async {
+        guard let userId = userSession?.uid else {
+            print("User is not authenticated.")
+            return
+        }
+        
+        // Append the new weight to the existing array
+        self.userModel?.weight.append(newWeight)
+        
+        do {
+            // Encode the updated user model
+            let encodedUser = try Firestore.Encoder().encode(userModel)
+            
+            // Update the user document in Firestore
+            try await Firestore.firestore().collection("users").document(userId).setData(encodedUser)
+            
+            // Fetch the updated user data
+            await fetchUser()
+        } catch {
+            print("Failed to update user weight: \(error.localizedDescription)")
+        }
     }
     
 }

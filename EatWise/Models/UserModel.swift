@@ -15,7 +15,7 @@ struct UserModel: Codable, Identifiable {
     var email: String
     var password: String
     var age: String
-    var weight: String
+    var weight: [Weight]
     var height: String
     var bmi: String
     var bmiMessage: String
@@ -24,4 +24,11 @@ struct UserModel: Codable, Identifiable {
     var allergies: [String]?
     var weightType: String
     var heightType: String
+}
+
+struct Weight: Codable, Identifiable {
+    
+    var id: String
+    var weight: String
+    var day: Date
 }

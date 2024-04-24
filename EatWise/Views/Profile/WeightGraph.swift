@@ -9,36 +9,35 @@ import SwiftUI
 import Charts
 
 struct WeightGraph: View {
-    
-    var data = [
-        WeightPoint(weight: 87, day: Date(timeIntervalSinceNow: -86400 * 28)),
-        WeightPoint(weight: 84, day: Date(timeIntervalSinceNow: -86400 * 21)),
-        WeightPoint(weight: 81, day: Date(timeIntervalSinceNow: -86400 * 14)),
-        WeightPoint(weight: 78, day: Date(timeIntervalSinceNow: -86400 * 7)),
-        WeightPoint(weight: 85, day: Date()),
-    ]
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
-        Chart{
-            ForEach(data) { datum in
-                LineMark(x: .value("Date", datum.day, unit: .day), y: .value("Weight", datum.weight))
-            }
-            RuleMark(
+        if let userModel = userViewModel.userModel {
+            let sortedWeightData = userModel.weight.sorted { $0.day < $1.day }
+            Chart {
+                ForEach(sortedWeightData) { datum in
+                    LineMark(x: .value("Date", datum.day, unit: .day), y: .value("Weight", Double(datum.weight) ?? 0.0 ))
+                }
+                RuleMark(
                     y: .value("Threshold", 75)
                 )
-            .foregroundStyle(Color.blue)
+                .foregroundStyle(Color.blue)
+            }
+            .foregroundStyle(.primaryGreen)
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: 86400 * 30)
+            .chartYAxis {
+                AxisMarks(position: .leading)
+            }
+            .padding()
+        } else {
+            Text("No weight data available")
+                .padding()
         }
-        
-        .chartScrollableAxes(.horizontal)
-        .chartXVisibleDomain(length: 86400*30)
-        .chartYAxis{
-            AxisMarks(position: .leading)
-        }
-        //.aspectRatio(1, contentMode: .fit)
-        .padding()
     }
 }
 
 #Preview {
     WeightGraph()
+        .environmentObject(UserViewModel()) // Provide a fresh instance of UserViewModel for preview
 }

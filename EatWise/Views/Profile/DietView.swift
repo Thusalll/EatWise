@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct DietView: View {
-    @State private var selectedOption = ""
+    @State private var selectedOption: String?
+    @State private var selectedOptions: [String]? = nil
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var options: [String] = ["Balanced", "Vegetarian", "Vegan", "keto"]
     
@@ -45,7 +47,7 @@ struct DietView: View {
                 
                 
                 ForEach(options, id: \.self) { option in
-                    //RadioButton(option: option)
+                    RadioButton(selectedOption: $selectedOption, selectedOptions: $selectedOptions, isSingleSelection: true, option: option) 
                 }
                 .padding(.top)
                 .listStyle(.plain)
@@ -59,6 +61,11 @@ struct DietView: View {
                 
             }
             .padding(.horizontal)
+            .onAppear {
+                // Initialize selectedOption with the value from ViewModel
+                selectedOption = userViewModel.userModel?.diet
+                print(selectedOption)
+            }
         
         
     }
