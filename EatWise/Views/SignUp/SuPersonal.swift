@@ -39,23 +39,28 @@ struct SuPersonal: View {
                         Spacer()
                     }
                     
-                    // First Name Textfield
-                    textField(text: $firstName, placeholder: "First Name")
-                        .padding([.bottom], 20)
-                    // Last Name Textfield
-                    textField(text: $lastName, placeholder: "Last Name")
-                        .padding([.bottom], 20)
-                    // Age Textfield
-                    textField(text: $age, placeholder: "Age")
-                        .padding([.bottom], 20)
-                    // Email Textfield
-                    textField(text: $email, placeholder: "Email")
-                        .textInputAutocapitalization(.never)
-                        .padding([.bottom], 20)
-                    //Password Textfield
-                    textField(text: $password, placeholder: "Password", isSecureField: true)
-                        .padding([.bottom], 20)
+                    VStack{
+                        // First Name Textfield
+                        textField(text: $firstName, placeholder: "First Name")
+                            .padding([.bottom], 10)
+                        // Last Name Textfield
+                        textField(text: $lastName, placeholder: "Last Name")
+                            .padding([.bottom], 10)
+                        // Age Textfield
+                        textField(text: $age, placeholder: "Age")
+                            .keyboardType(.numberPad)
+                            .padding([.bottom], 10)
+                        // Email Textfield
+                        textField(text: $email, placeholder: "Email")
+                            .textInputAutocapitalization(.never)
+                            .padding([.bottom], 10)
+                        //Password Textfield
+                        textField(text: $password, placeholder: "Password - Minimum 6 characters", isSecureField: true)
+                            .padding([.bottom], 10)
+                    }
+                    
                     Spacer()
+                        .frame(height: 50)
                     
                     // Next Button
                     button(text: "Next", action: {

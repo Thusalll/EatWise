@@ -22,7 +22,7 @@ struct NavBar: View {
                 }
             }
             .toolbarBackground(.visible, for: .tabBar)
-            //.accentColor(/*@START_MENU_TOKEN@*/Color("PrimaryGreen")/*@END_MENU_TOKEN@*/)
+            .accentColor(/*@START_MENU_TOKEN@*/Color("PrimaryGreen")/*@END_MENU_TOKEN@*/)
         
     }
 }

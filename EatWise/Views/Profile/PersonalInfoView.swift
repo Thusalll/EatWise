@@ -12,13 +12,16 @@ struct PersonalInfoView: View {
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
     
-    @State private var name = "John Smith"
-    @State private var age = "22"
-    @State private var height = "5'11"
-    @State private var weight = "85kg"
-    @State private var bmi = "25 - Overweight"
+    @State private var name = ""
+    @State private var age = ""
+    @State private var height = ""
+    @State private var weight = ""
+    @State private var bmi = ""
+    
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
+        if let user = userViewModel.userModel{
             VStack {
                 HStack {
                     Text("EatWise")
@@ -48,7 +51,7 @@ struct PersonalInfoView: View {
                 
                 List{
                     Section {
-                        TextField("Name", text: $name)
+                        TextField((user.firstName + " " + user.lastName), text: $name)
                     } header: {
                         Text("Name")
                             .font(
@@ -57,7 +60,7 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                     Section {
-                        TextField("Age", text: $age)
+                        TextField(user.age, text: $age)
                     } header: {
                         Text("Age")
                             .font(
@@ -66,7 +69,7 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                     Section {
-                        TextField("Weught", text: $weight)
+                        TextField((user.weight + user.weightType), text: $weight)
                     } header: {
                         Text("Weight")
                             .font(
@@ -75,7 +78,7 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                     Section {
-                        TextField("Weught", text: $height)
+                        TextField((user.height + user.heightType), text: $height)
                     } header: {
                         Text("Height")
                             .font(
@@ -84,7 +87,7 @@ struct PersonalInfoView: View {
                             .foregroundStyle(.primaryGreen)
                     }
                     Section {
-                        TextField("Weught", text: $bmi)
+                        TextField((user.bmi + " - " + user.bmiMessage), text: $bmi)
                     } header: {
                         Text("BMI")
                             .font(
@@ -101,13 +104,14 @@ struct PersonalInfoView: View {
                 //Spacer()
                 
             }
-            
             .padding(.horizontal)
+        }
+            
         
         
     }
 }
 
 #Preview {
-    PersonalInfoView()
+    PersonalInfoView().environmentObject(UserViewModel())
 }

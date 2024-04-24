@@ -13,6 +13,7 @@ struct ProfileView: View {
     @State private var inputWeight: String = ""
     @State private var inputDate = Date()
     
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         NavigationView {
@@ -34,61 +35,85 @@ struct ProfileView: View {
                         .cornerRadius(10)
                 }
                 
-                List {
-                    NavigationLink(destination: AllergyView()) {
-                        Text("Allergies")
-                            .font(
-                                Font.custom("Nunito", size: 22)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.primaryGreen)
+                Section {
+                    List {
+                        NavigationLink(destination: AllergyView()) {
+                            Text("Allergies")
+                                .font(
+                                    Font.custom("Nunito", size: 22)
+                                        .weight(.semibold)
+                                )
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.primaryGreen)
+                        }
+                        .padding(.top)
+                        
+                        NavigationLink(destination: DietView()) {
+                            Text("Food Preference")
+                                .font(
+                                    Font.custom("Nunito", size: 22)
+                                        .weight(.semibold)
+                                )
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.primaryGreen)
+                        }
+                        .padding(.top)
+                        
+                        NavigationLink(destination: GoalView()) {
+                            Text("Change Goal")
+                                .font(
+                                    Font.custom("Nunito", size: 22)
+                                        .weight(.semibold)
+                                )
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.primaryGreen)
+                        }
+                        .padding(.top)
+                        
+                        NavigationLink(destination: PersonalInfoView()) {
+                            Text("Personal Information")
+                                .font(
+                                    Font.custom("Nunito", size: 22)
+                                        .weight(.semibold)
+                                )
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.primaryGreen)
+                        }
+                        .padding(.top)
+                        
+                        Button(action: {
+                            userViewModel.signOut()
+                        }, label: {
+                            HStack{
+                                Image(systemName: "arrow.left.circle.fill")
+                                    .imageScale(.large)
+                                    .foregroundStyle(Color.red)
+                                
+                                Text("Sign Out")
+                                    .font(
+                                        Font.custom("Nunito", size: 22)
+                                            .weight(.semibold)
+                                    )
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(Color("TextColor"))
+                                
+                                Spacer()
+                            }
+                            .padding(.top)
+                            
+                        })
                     }
-                    .padding(.top)
-                    
-                    NavigationLink(destination: DietView()) {
-                        Text("Food Preference")
-                            .font(
-                                Font.custom("Nunito", size: 22)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.primaryGreen)
-                    }
-                    .padding(.top)
-                    
-                    NavigationLink(destination: GoalView()) {
-                        Text("Change Goal")
-                            .font(
-                                Font.custom("Nunito", size: 22)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.primaryGreen)
-                    }
-                    .padding(.top)
-                    
-                    NavigationLink(destination: PersonalInfoView()) {
-                        Text("Personal Information")
-                            .font(
-                                Font.custom("Nunito", size: 22)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.primaryGreen)
-                    }
-                    .padding(.top)
+                    .padding([.top], 10)
+                    .listStyle(.plain)
+                    .foregroundStyle(.primaryGreen)
                 }
-                .padding([.top], 10)
-                .listStyle(.plain)
-                .foregroundStyle(.primaryGreen)
             }
             .padding([.horizontal])
             .sheet(isPresented: $showingAddWeightPopup) {
                 // This is the popup content
                 AddWeightPopup(inputWeight: $inputWeight, inputDate: $inputDate, isAddingWeight: $showingAddWeightPopup)
             }
-
+            
         }
         
     }
@@ -102,15 +127,15 @@ struct AddWeightPopup: View {
     @Binding var inputWeight: String
     @Binding var inputDate: Date
     @Binding var isAddingWeight: Bool
-
+    
     var body: some View {
         NavigationView {
             Form {
                 TextField("Weight", text: $inputWeight)
                     .keyboardType(.decimalPad)
-
+                
                 DatePicker("Date", selection: $inputDate, in: ...Date(), displayedComponents: .date)
-
+                
                 Button("Save Weight") {
                     // Code to save the weight and date
                     // Make sure to validate the date and weight
