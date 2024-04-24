@@ -8,9 +8,24 @@
 import SwiftUI
 
 struct SuAllergies: View {
-    @State private var selectedOption = ""
+    let firstName: String
+    let lastName: String
+    let age: String
+    let email: String
+    let password: String
+    let weight: String
+    let height: String
+    let bmi: String
+    let bmiMessage: String
+    let heightType: String
+    let weightType: String
+    let goal: String
+    let diet: String
+    @State private var selectedOption: String? = nil
+    @State private var selectedOptions: [String]? = nil
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var options: [String] = ["Fish", "Nuts", "Milk", "Cheese", "Wheat", "Shellfish"]
     
@@ -47,7 +62,7 @@ struct SuAllergies: View {
                 }
                 VStack {
                     ForEach(options, id: \.self) { option in
-                        RadioButton(option: option)
+                        RadioButton(selectedOption: $selectedOption, selectedOptions: $selectedOptions, isSingleSelection: false, option: option)
                     }
                 }
                 .padding(.top)
@@ -55,11 +70,27 @@ struct SuAllergies: View {
                 Spacer()
                 
                 // Next Button
-                button(text: "Next", action: {
-                    presentNextView.toggle()
+                button(text: "Sign Up", action: {
+                    Task{
+                        try await userViewModel.createUser(withEmail: email,
+                                                           password: password,
+                                                           firstName: firstName,
+                                                           lastname: lastName,
+                                                           age: age,
+                                                           height: height,
+                                                           weight: weight,
+                                                           bmi: bmi,
+                                                           bmiMessage: bmiMessage,
+                                                           goal: goal,
+                                                           diet: diet,
+                                                           allergies: [],
+                                                           weightType: weightType,
+                                                           heightType: heightType
+                        )
+                    }
                 })
-                .padding([.top], 5)
-                .padding(.bottom)
+                .padding([.top], 25)
+                .padding([.bottom], 5)
                 
                 //Spacer()
                 
@@ -76,13 +107,12 @@ struct SuAllergies: View {
                     }
                 }
             }
-            .padding(.bottom)
             .padding([.horizontal], 40)
-        .navigationBarBackButtonHidden(true)
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
 
 #Preview {
-    SuAllergies()
+    SuAllergies(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", heightType: "", weightType: "", goal: "", diet: "")
 }

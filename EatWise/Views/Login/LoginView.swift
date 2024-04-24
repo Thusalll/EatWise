@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var password: String = ""
+    @State private var email: String = ""
     var body: some View {
         NavigationStack {
             VStack {
@@ -30,25 +31,11 @@ struct LoginView: View {
                 }
                 
                 // Email Textfield
-                textField(placeholder: "Email")
+                textField(text: $email, placeholder: "Email")
                     .padding([.bottom], 50)
                 
                 // Password Textfield
-                SecureField(
-                    "Password",
-                    text: $password
-                )
-                .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
-                .padding()
-                .overlay(
-                    GeometryReader { geometry in
-                        Rectangle()
-                            .stroke(Color("PrimaryGreen"), lineWidth: 2)
-                            .offset(x: 0, y: geometry.size.height - 1)
-                            .frame(width: geometry.size.width, height: 1)
-                    }
-                )
+                textField(text: $password, placeholder: "Password", isSecureField: true)
                 .padding([.bottom], 80)
                 
                 // Login Button

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F265EEA92BD716140015139C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEA82BD716140015139C /* UserModel.swift */; };
+		F265EEAC2BD7183A0015139C /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAB2BD7183A0015139C /* UserViewModel.swift */; };
+		F265EEB02BD7E75B0015139C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAF2BD7E75B0015139C /* RootView.swift */; };
 		F2815E992BD44A84004BFE37 /* EatWiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2815E982BD44A84004BFE37 /* EatWiseApp.swift */; };
 		F2815E9D2BD44A85004BFE37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2815E9C2BD44A85004BFE37 /* Assets.xcassets */; };
 		F2815EA02BD44A85004BFE37 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2815E9F2BD44A85004BFE37 /* Preview Assets.xcassets */; };
@@ -69,6 +72,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F265EEA82BD716140015139C /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		F265EEAB2BD7183A0015139C /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		F265EEAF2BD7E75B0015139C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		F2815E952BD44A84004BFE37 /* EatWise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EatWise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2815E982BD44A84004BFE37 /* EatWiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EatWiseApp.swift; sourceTree = "<group>"; };
 		F2815E9C2BD44A85004BFE37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -143,11 +149,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F265EEAA2BD717A90015139C /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F265EEAB2BD7183A0015139C /* UserViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F265EEAD2BD7221C0015139C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F265EEAE2BD7E73C0015139C /* root */ = {
+			isa = PBXGroup;
+			children = (
+				F265EEAF2BD7E75B0015139C /* RootView.swift */,
+			);
+			path = root;
+			sourceTree = "<group>";
+		};
 		F2815E8C2BD44A84004BFE37 = {
 			isa = PBXGroup;
 			children = (
 				F2815E972BD44A84004BFE37 /* EatWise */,
 				F2815E962BD44A84004BFE37 /* Products */,
+				F265EEAD2BD7221C0015139C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,7 +196,9 @@
 				F2815EA62BD44C5A004BFE37 /* GoogleService-Info.plist */,
 				F2815EDF2BD451E4004BFE37 /* Fonts */,
 				F2815F1C2BD5462D004BFE37 /* Models */,
+				F265EEAA2BD717A90015139C /* ViewModels */,
 				F2815EE42BD52B5E004BFE37 /* Views */,
+				F265EEAE2BD7E73C0015139C /* root */,
 				F2815E982BD44A84004BFE37 /* EatWiseApp.swift */,
 				F2815E9C2BD44A85004BFE37 /* Assets.xcassets */,
 				F2815E9E2BD44A85004BFE37 /* Preview Content */,
@@ -259,6 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				F2815F1D2BD54657004BFE37 /* WeightModel.swift */,
+				F265EEA82BD716140015139C /* UserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -374,8 +407,10 @@
 				F2815F042BD539C2004BFE37 /* MealCard.swift in Sources */,
 				F2815EEC2BD52C6E004BFE37 /* button.swift in Sources */,
 				F2815F022BD539BB004BFE37 /* NutritionCard.swift in Sources */,
+				F265EEAC2BD7183A0015139C /* UserViewModel.swift in Sources */,
 				F2815F062BD539CC004BFE37 /* NavBar.swift in Sources */,
 				F2815F002BD539AC004BFE37 /* DailyPlanView.swift in Sources */,
+				F265EEB02BD7E75B0015139C /* RootView.swift in Sources */,
 				F2815F192BD53E90004BFE37 /* GoalView.swift in Sources */,
 				F2815F0F2BD53E45004BFE37 /* WeightGraph.swift in Sources */,
 				F2815EF72BD5321C004BFE37 /* SuAllergies.swift in Sources */,
@@ -385,6 +420,7 @@
 				F2815EEA2BD52C0B004BFE37 /* textField.swift in Sources */,
 				F2815F1E2BD54657004BFE37 /* WeightModel.swift in Sources */,
 				F2815F112BD53E53004BFE37 /* ProfileView.swift in Sources */,
+				F265EEA92BD716140015139C /* UserModel.swift in Sources */,
 				F2815EF32BD53207004BFE37 /* SuDiet.swift in Sources */,
 				F2815F172BD53E86004BFE37 /* DietView.swift in Sources */,
 				F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */,

@@ -44,7 +44,7 @@ struct GoalView: View {
                 
                 
                 ForEach(options, id: \.self) { option in
-                    RadioButton(option: option)
+                    //RadioButton(option: option)
                 }
                 .padding(.top)
                 .listStyle(.plain)

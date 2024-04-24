@@ -8,29 +8,58 @@
 import SwiftUI
 
 struct textField: View {
-    @State private var username: String = ""
-    var placeholder: String
-    //@FocusState private var emailFieldIsFocused: Bool = false
+    @Binding var text: String
+    let placeholder: String
+    var isSecureField = false
     
     var body: some View {
-        TextField(
-            placeholder,
-            text: $username
-        )
-        .textInputAutocapitalization(.never)
-        .disableAutocorrection(true)
-        .padding()
-        .overlay(
-            GeometryReader { geometry in
-                Rectangle()
-                    .stroke(Color("PrimaryGreen"), lineWidth: 2)
-                    .offset(x: 0, y: geometry.size.height - 1) // Adjust offset for desired padding
-                    .frame(width: geometry.size.width, height: 1)
-            }
-        )
+        
+        if isSecureField{
+            SecureField(
+                placeholder,
+                text: $text
+            )
+            .font(
+                Font.custom("Nunito", size: 20)
+            )
+            .disableAutocorrection(true)
+            .padding()
+            .overlay(
+                GeometryReader { geometry in
+                    Rectangle()
+                        .stroke(Color("PrimaryGreen"), lineWidth: 2)
+                        .offset(x: 0, y: geometry.size.height - 1)
+                        .frame(width: geometry.size.width, height: 1)
+                }
+            )
+        } else {
+            TextField(
+                placeholder,
+                text: $text
+            )
+            
+            .font(
+                Font.custom("Nunito", size: 20)
+            )
+            .disableAutocorrection(true)
+            .padding()
+            .overlay(
+                GeometryReader { geometry in
+                    Rectangle()
+                        .stroke(Color("PrimaryGreen"), lineWidth: 2)
+                        .offset(x: 0, y: geometry.size.height - 1) // Adjust offset for desired padding
+                        .frame(width: geometry.size.width, height: 1)
+                }
+            )
+        }
+        
+        
     }
 }
 
-#Preview {
-    textField(placeholder: "custom")
+struct ContentView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        textField(text: .constant(""), placeholder: "custom")
+    }
 }

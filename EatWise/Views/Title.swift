@@ -14,9 +14,9 @@ struct Title: View {
               .font(
                 Font.custom("Nunito-ExtraBold", size: 74)
               )
+              .frame(width: 308, height: 75, alignment: .leading)
               .multilineTextAlignment(.center)
               .foregroundColor(Color("TitleGreen"))
-          .frame(width: 308, height: 75, alignment: .leading)
             Spacer()
         }
     }

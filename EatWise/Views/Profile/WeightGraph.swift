@@ -23,7 +23,12 @@ struct WeightGraph: View {
             ForEach(data) { datum in
                 LineMark(x: .value("Date", datum.day, unit: .day), y: .value("Weight", datum.weight))
             }
+            RuleMark(
+                    y: .value("Threshold", 75)
+                )
+            .foregroundStyle(Color.blue)
         }
+        
         .chartScrollableAxes(.horizontal)
         .chartXVisibleDomain(length: 86400*30)
         .chartYAxis{

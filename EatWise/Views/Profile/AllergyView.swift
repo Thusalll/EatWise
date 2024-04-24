@@ -46,7 +46,7 @@ struct AllergyView: View {
                 
                 
                 ForEach(options, id: \.self) { option in
-                    RadioButton(option: option)
+                    //RadioButton(option: option)
                 }
                 
                 
