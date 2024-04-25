@@ -27,6 +27,7 @@ class UserViewModel: ObservableObject {
         self.userModel = userModel
     }
     
+    // User login function
     func logIn (withEmail email: String, password: String) async throws {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -37,6 +38,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    // User sign up function
     func createUser (withEmail email: String, password: String, firstName: String, lastname: String, age: String, height: String, weight: [Weight], bmi: String, bmiMessage: String, goal: String, diet: String, allergies: [String], weightType: String, heightType: String) async throws {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
@@ -50,6 +52,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    // User sign out function
     func signOut () {
         do{
             try Auth.auth().signOut()
@@ -60,6 +63,7 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    // Fetch user information function
     func fetchUser() async {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         
@@ -69,6 +73,7 @@ class UserViewModel: ObservableObject {
         //print("DEBUG: Current user is \(self.userModel)")
     }
     
+    // Update user weight function
     func updateUserWeight(newWeight: Weight) async {
         guard let userId = userSession?.uid else {
             print("User is not authenticated.")
@@ -89,6 +94,54 @@ class UserViewModel: ObservableObject {
             await fetchUser()
         } catch {
             print("Failed to update user weight: \(error.localizedDescription)")
+        }
+    }
+    
+    // Update user goal function
+    func updateUserGoal(newGoal: String) async {
+        guard let userId = userSession?.uid else {
+            print("User is not authenticated.")
+            return
+        }
+        
+        // update the new goal
+        self.userModel?.goal = newGoal
+        
+        do {
+            // Encode the updated user model
+            let encodedUser = try Firestore.Encoder().encode(userModel)
+            
+            // Update the user document in Firestore
+            try await Firestore.firestore().collection("users").document(userId).setData(encodedUser)
+            
+            // Fetch the updated user data
+            await fetchUser()
+        } catch {
+            print("Failed to update user goal: \(error.localizedDescription)")
+        }
+    }
+    
+    // Update user diet function
+    func updateUserDiet(newDiet: String) async {
+        guard let userId = userSession?.uid else {
+            print("User is not authenticated.")
+            return
+        }
+        
+        // update the new goal
+        self.userModel?.diet = newDiet
+        
+        do {
+            // Encode the updated user model
+            let encodedUser = try Firestore.Encoder().encode(userModel)
+            
+            // Update the user document in Firestore
+            try await Firestore.firestore().collection("users").document(userId).setData(encodedUser)
+            
+            // Fetch the updated user data
+            await fetchUser()
+        } catch {
+            print("Failed to update user diet: \(error.localizedDescription)")
         }
     }
     

@@ -52,6 +52,7 @@ struct PersonalInfoView: View {
                 List{
                     Section {
                         TextField((user.firstName + " " + user.lastName), text: $name)
+                            .disabled(true)
                     } header: {
                         Text("Name")
                             .font(
@@ -61,6 +62,7 @@ struct PersonalInfoView: View {
                     }
                     Section {
                         TextField(user.age, text: $age)
+                            .disabled(true)
                     } header: {
                         Text("Age")
                             .font(
@@ -71,6 +73,7 @@ struct PersonalInfoView: View {
                     Section {
                         if let latestWeightEntry = user.latestWeightEntry {
                             TextField("\(latestWeightEntry.weight) \(user.weightType)", text: $weight)
+                                .disabled(true)
                         }
                     } header: {
                         Text("Weight")
@@ -81,6 +84,7 @@ struct PersonalInfoView: View {
                     }
                     Section {
                         TextField((user.height + user.heightType), text: $height)
+                            .disabled(true)
                     } header: {
                         Text("Height")
                             .font(
@@ -90,6 +94,7 @@ struct PersonalInfoView: View {
                     }
                     Section {
                         TextField((user.bmi + " - " + user.bmiMessage), text: $bmi)
+                            .disabled(true)
                     } header: {
                         Text("BMI")
                             .font(

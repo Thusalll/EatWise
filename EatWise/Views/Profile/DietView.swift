@@ -11,7 +11,8 @@ struct DietView: View {
     @State private var selectedOption: String?
     @State private var selectedOptions: [String]? = nil
     @State private var isMaintainWeightSelected = true
-    @State private var presentNextView = false
+    @Environment(\.presentationMode) var presentationMode
+
     @EnvironmentObject var userViewModel: UserViewModel
     
     var options: [String] = ["Balanced", "Vegetarian", "Vegan", "keto"]
@@ -56,7 +57,13 @@ struct DietView: View {
                 
                 Spacer()
                 
-                SaveButton(text: "Save", action: {})
+                SaveButton(text: "Save", action: {
+                    Task{
+                        await userViewModel.updateUserDiet(newDiet: selectedOption ?? "")
+                        // Dismiss the GoalView and go back to the previous view (ProfileView)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                })
                     .padding()
                 
             }

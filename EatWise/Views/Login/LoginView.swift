@@ -13,56 +13,58 @@ struct LoginView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     var body: some View {
         NavigationStack {
-            VStack {
-                // Eatwise Title
-                Title()
-                    .padding([.bottom], 70)
-                
-                // Login Title
-                HStack {
-                    Text("Log in")
-                        .font(
-                            Font.custom("Nunito-Bold", size: 50)
-                        )
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color("TextColor"))
-                        .frame(width: 145, height: 60)
-                        .padding([.bottom], 80)
-                    Spacer()
-                }
-                
-                // Email Textfield
-                textField(text: $email, placeholder: "Email")
-                    .padding([.bottom], 50)
-                
-                // Password Textfield
-                textField(text: $password, placeholder: "Password", isSecureField: true)
-                .padding([.bottom], 80)
-                
-                // Login Button
-                button(text: "Login", action: {
-                    Task{
-                        try await userViewModel.logIn(withEmail: email, password: password)
-                    }
-                })
-                
-                Spacer()
-                
-                // sign up label
-                HStack {
-                    Text("Don't have an account?")
-                        .foregroundStyle(Color("TextColor"))
-                        .font(Font.custom("Nunito", size: 14))
+            ScrollView {
+                VStack {
+                    // Eatwise Title
+                    Title()
+                        .padding([.bottom], 70)
                     
-                    NavigationLink(destination: SuPersonal()) {
-                        Text("Sign Up")
+                    // Login Title
+                    HStack {
+                        Text("Log in")
+                            .font(
+                                Font.custom("Nunito-Bold", size: 50)
+                            )
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(Color("TextColor"))
+                            .frame(width: 145, height: 60)
+                            .padding([.bottom], 80)
+                        Spacer()
+                    }
+                    
+                    // Email Textfield
+                    textField(text: $email, placeholder: "Email")
+                        .padding([.bottom], 50)
+                    
+                    // Password Textfield
+                    textField(text: $password, placeholder: "Password", isSecureField: true)
+                    .padding([.bottom], 80)
+                    
+                    // Login Button
+                    button(text: "Login", action: {
+                        Task{
+                            try await userViewModel.logIn(withEmail: email, password: password)
+                        }
+                    })
+                    
+                    Spacer()
+                    
+                    // sign up label
+                    HStack {
+                        Text("Don't have an account?")
                             .foregroundStyle(Color("TextColor"))
-                            .font(Font.custom("Nunito-Bold", size: 14))
+                            .font(Font.custom("Nunito", size: 14))
+                        
+                        NavigationLink(destination: SuPersonal()) {
+                            Text("Sign Up")
+                                .foregroundStyle(Color("TextColor"))
+                                .font(Font.custom("Nunito-Bold", size: 14))
+                        }
                     }
                 }
-            }
-            .padding([.top, .horizontal], 40)
+                .padding([.top, .horizontal], 40)
             .navigationBarBackButtonHidden(true)
+            }
         }
     }
 }
