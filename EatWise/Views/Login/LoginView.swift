@@ -34,6 +34,7 @@ struct LoginView: View {
                     
                     // Email Textfield
                     textField(text: $email, placeholder: "Email")
+                        .textInputAutocapitalization(.never)
                         .padding([.bottom], 50)
                     
                     // Password Textfield

@@ -12,6 +12,7 @@ struct DailyPlanView: View {
     @State private var selectedDate = Date()
     @State private var showDatePicker = false
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -91,83 +92,101 @@ struct DailyPlanView: View {
                         )
                         .padding(.top)
                         
-                        if Calendar.current.isDate(selectedDate, inSameDayAs: Date()) {
-                            MealCard(
-                                title: "Breakfast",
-                                totalCalories: "500 Calories",
-                                firstImageName: "eggs-on-toast",
-                                secondImageName: "eggs-on-toast",
-                                firstMeal: "Scrambled eggs on toast",
-                                secondMeal: "Scrambled eggs on toast",
-                                firstMealInfo: "2 Servings - 380 Calories",
-                                secondMealInfo: "2 Servings - 380 Calories",
-                                onTapGesture: {
-                                    print("Tapped")
-                                    presentNextView.toggle()
+                        if !userViewModel.mealModel.isEmpty{
+                            let meals = userViewModel.mealModel
+                            if Calendar.current.isDate(selectedDate, inSameDayAs: Date()) {
+                                if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                                    MealCard(
+                                        title: "Breakfast",
+                                        totalCalories: "500 Calories",
+                                        firstImageName: firstImageUrl,
+                                        secondImageName: "eggs-on-toast",
+                                        firstMeal: meals[0].meal,
+                                        secondMeal: "Scrambled eggs on toast",
+                                        firstMealInfo: "Serving: \(meals[0].serving) - \(meals[0].calories) calories",
+                                        secondMealInfo: "2 Servings - 380 Calories",
+                                        onTapGesture: {
+                                            print("Tapped")
+                                            presentNextView.toggle()
+                                        }
+                                    )
                                 }
-                            )
-                            
-                            MealCard(
-                                title: "Lunch",
-                                totalCalories: "500 Calories",
-                                firstImageName: "eggs-on-toast",
-                                secondImageName: "eggs-on-toast",
-                                firstMeal: "Scrambled eggs on toast",
-                                secondMeal: "Scrambled eggs on toast",
-                                firstMealInfo: "2 Servings - 380 Calories",
-                                secondMealInfo: "2 Servings - 380 Calories",
-                                onTapGesture: {
-                                    
+                                
+                                
+                                
+                                if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                                    MealCard(
+                                        title: "Breakfast",
+                                        totalCalories: "500 Calories",
+                                        firstImageName: firstImageUrl,
+                                        secondImageName: "eggs-on-toast",
+                                        firstMeal: "Scrambled eggs on toast",
+                                        secondMeal: "Scrambled eggs on toast",
+                                        firstMealInfo: "2 Servings - 380 Calories",
+                                        secondMealInfo: "2 Servings - 380 Calories",
+                                        onTapGesture: {
+                                            print("Tapped")
+                                            presentNextView.toggle()
+                                        }
+                                    )
                                 }
-                            )
-                            
-                            MealCard(
-                                title: "Dinner",
-                                totalCalories: "500 Calories",
-                                firstImageName: "eggs-on-toast",
-                                secondImageName: "eggs-on-toast",
-                                firstMeal: "Scrambled eggs on toast",
-                                secondMeal: "Scrambled eggs on toast",
-                                firstMealInfo: "2 Servings - 380 Calories",
-                                secondMealInfo: "2 Servings - 380 Calories",
-                                onTapGesture: {
-                                    
+                                
+                                if let firstImageUrl = URL(string:userViewModel.mealModel[0].image){
+                                    MealCard(
+                                        title: "Breakfast",
+                                        totalCalories: "500 Calories",
+                                        firstImageName: firstImageUrl,
+                                        secondImageName: "eggs-on-toast",
+                                        firstMeal: "Scrambled eggs on toast",
+                                        secondMeal: "Scrambled eggs on toast",
+                                        firstMealInfo: "2 Servings - 380 Calories",
+                                        secondMealInfo: "2 Servings - 380 Calories",
+                                        onTapGesture: {
+                                            print("Tapped")
+                                            presentNextView.toggle()
+                                        }
+                                    )
                                 }
-                            )
-                            
-                            MealCard(
-                                title: "Snack",
-                                totalCalories: "500 Calories",
-                                firstImageName: "eggs-on-toast",
-                                secondImageName: "eggs-on-toast",
-                                firstMeal: "Scrambled eggs on toast",
-                                secondMeal: "Scrambled eggs on toast",
-                                firstMealInfo: "2 Servings - 380 Calories",
-                                secondMealInfo: "2 Servings - 380 Calories",
-                                onTapGesture: {
-                                    
+                                
+                                if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                                    MealCard(
+                                        title: "Breakfast",
+                                        totalCalories: "500 Calories",
+                                        firstImageName: firstImageUrl,
+                                        secondImageName: "eggs-on-toast",
+                                        firstMeal: "Scrambled eggs on toast",
+                                        secondMeal: "Scrambled eggs on toast",
+                                        firstMealInfo: "2 Servings - 380 Calories",
+                                        secondMealInfo: "2 Servings - 380 Calories",
+                                        onTapGesture: {
+                                            print("Tapped")
+                                            presentNextView.toggle()
+                                        }
+                                    )
+                                    .padding(.bottom)
                                 }
-                            ).padding(.bottom)
-                        } else if Calendar.current.isDate(selectedDate, inSameDayAs: Calendar.current.date(byAdding: .day, value: 1, to: Date())!) {
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                                Text("Generate\na New\n Daily Plan")
-                            })
-                            .frame(width: 180, height: 226)
-                            .font(
-                                Font.custom("Nunito", size: 29)
-                                    .weight(.semibold)
-                            )
-                            .foregroundStyle(.primaryGreen)
-                            .background(
-                                Color.secondaryGreen
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .padding(.vertical)
+                            } else if Calendar.current.isDate(selectedDate, inSameDayAs: Calendar.current.date(byAdding: .day, value: 1, to: Date())!) {
+                                Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                                    Text("Generate\na New\n Daily Plan")
+                                })
+                                .frame(width: 180, height: 226)
+                                .font(
+                                    Font.custom("Nunito", size: 29)
+                                        .weight(.semibold)
+                                )
+                                .foregroundStyle(.primaryGreen)
+                                .background(
+                                    Color.secondaryGreen
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                .padding(.vertical)
+                            }
                         }
-                    }else{
+                    } else{
                         WeeklyPlanView()
                         //.padding(.horizontal)
                     }
+
                 }
                 
             }

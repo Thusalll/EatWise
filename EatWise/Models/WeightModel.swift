@@ -7,9 +7,8 @@
 
 import Foundation
 
-struct WeightPoint: Identifiable {
+struct WeightPoint: Identifiable, Codable {
     
     var id = UUID()
-    var weight: Double
-    var day: Date
+    var name: String
 }

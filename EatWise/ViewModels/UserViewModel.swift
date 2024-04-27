@@ -13,12 +13,14 @@ import FirebaseFirestoreSwift
 class UserViewModel: ObservableObject {
     @Published var userSession: FirebaseAuth.User?
     @Published var userModel: UserModel?
+    @Published var mealModel: [MealModel] = []
     
     init() {
         self.userSession = Auth.auth().currentUser
         
         Task{
             await fetchUser()
+            await fetchMeals()
         }
     }
     
@@ -47,6 +49,7 @@ class UserViewModel: ObservableObject {
             let encodedUser = try Firestore.Encoder().encode(user)
             try await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
             await fetchUser()
+            await fetchMeals()
         } catch {
             print("DEBUG: Failed to create user with error \(error.localizedDescription)")
         }
@@ -145,5 +148,29 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    func fetchMeals() async {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        
+        let query = Firestore.firestore().collection("meals")
+            .whereField("dinner", isEqualTo: true)
+        var fetchedMealCount = 0 // remove this
+        do {
+            let querySnapshot = try await query.getDocuments()
+            for document in querySnapshot.documents {
+                if let mealModels = try? document.data(as: MealModel.self) {
+                    // Assign fetched meal to mealModel property
+                    self.mealModel.append(mealModels)
+                    // Increment the fetched meal count
+                    fetchedMealCount += 1
+                    
+                    print("Meal \(fetchedMealCount): \(mealModels.meal)")
+                }
+            }
+        } catch {
+            print("Error fetching meals: \(error.localizedDescription)")
+        }
+    }
+
 }
+
 

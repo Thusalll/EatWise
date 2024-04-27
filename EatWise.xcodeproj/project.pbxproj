@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F21390012BDAE9E100A22A38 /* MealModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21390002BDAE9E100A22A38 /* MealModel.swift */; };
 		F265EEA92BD716140015139C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEA82BD716140015139C /* UserModel.swift */; };
 		F265EEAC2BD7183A0015139C /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAB2BD7183A0015139C /* UserViewModel.swift */; };
 		F265EEB02BD7E75B0015139C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAF2BD7E75B0015139C /* RootView.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F21390002BDAE9E100A22A38 /* MealModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealModel.swift; sourceTree = "<group>"; };
 		F265EEA82BD716140015139C /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		F265EEAB2BD7183A0015139C /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		F265EEAF2BD7E75B0015139C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			children = (
 				F2815F1D2BD54657004BFE37 /* WeightModel.swift */,
 				F265EEA82BD716140015139C /* UserModel.swift */,
+				F21390002BDAE9E100A22A38 /* MealModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				F2815F002BD539AC004BFE37 /* DailyPlanView.swift in Sources */,
 				F265EEB02BD7E75B0015139C /* RootView.swift in Sources */,
 				F2815F192BD53E90004BFE37 /* GoalView.swift in Sources */,
+				F21390012BDAE9E100A22A38 /* MealModel.swift in Sources */,
 				F2815F0F2BD53E45004BFE37 /* WeightGraph.swift in Sources */,
 				F2815EF72BD5321C004BFE37 /* SuAllergies.swift in Sources */,
 				F2815F1B2BD53EAC004BFE37 /* PersonalInfoView.swift in Sources */,

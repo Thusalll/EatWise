@@ -10,7 +10,7 @@ import SwiftUI
 struct MealCard: View {
     var title: String
     var totalCalories: String
-    var firstImageName: String
+    var firstImageName: URL
     var secondImageName: String
     var firstMeal: String
     var secondMeal: String
@@ -50,11 +50,21 @@ struct MealCard: View {
                         .foregroundColor(.clear)
                         .frame(width: 53, height: 50)
                         .background(
-                            Image(firstImageName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 53, height: 50)
-                                .clipped()
+                            AsyncImage(url: firstImageName) { phase in
+                                // Handle loading, success, failure states here
+                                if let image = phase.image{
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 53, height: 50)
+                                        .clipped()
+                                } else if phase.error != nil {
+                                    // Handle error
+                                } else {
+                                    // Handle loading state
+                                    ProgressView()
+                                }
+                            }
                         )
                         .overlay(
                             Rectangle()
@@ -64,8 +74,8 @@ struct MealCard: View {
                     
                     VStack (alignment: .leading){
                         Text(firstMeal)
-                            .font(Font.custom("Nunito", size: 22))
-                            .multilineTextAlignment(.center)
+                            .font(Font.custom("Nunito", size: 20))
+                            .multilineTextAlignment(.leading)
                             .foregroundColor(.black)
                         
                         Text(firstMealInfo)
@@ -97,7 +107,7 @@ struct MealCard: View {
                     
                     VStack (alignment: .leading){
                         Text(secondMeal)
-                            .font(Font.custom("Nunito", size: 22))
+                            .font(Font.custom("Nunito", size: 20))
                             .multilineTextAlignment(.center)
                             .foregroundColor(.black)
                         
@@ -118,16 +128,4 @@ struct MealCard: View {
     }
 }
 
-#Preview {
-    MealCard(
-        title: "Breakfast",
-        totalCalories: "500 Calories",
-        firstImageName: "eggs-on-toast",
-        secondImageName: "eggs-on-toast",
-        firstMeal: "Scrambled eggs on toast",
-        secondMeal: "Scrambled eggs on toast",
-        firstMealInfo: "2 Servings - 380 Calories",
-        secondMealInfo: "2 Servings - 380 Calories",
-        onTapGesture: {}
-    )
-}
+

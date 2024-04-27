@@ -10,6 +10,7 @@ import SwiftUI
 struct WeeklyPlanView: View {
     @State private var selectedDate: Date = Date()
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     let daysOfWeek: [String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     let startOfWeek: Date
@@ -52,62 +53,75 @@ struct WeeklyPlanView: View {
                 )
                 .padding(.top)
                 
-                MealCard(
-                    title: "Breakfast",
-                    totalCalories: "500 Calories",
-                    firstImageName: "eggs-on-toast",
-                    secondImageName: "eggs-on-toast",
-                    firstMeal: "Scrambled eggs on toast",
-                    secondMeal: "Scrambled eggs on toast",
-                    firstMealInfo: "2 Servings - 380 Calories",
-                    secondMealInfo: "2 Servings - 380 Calories",
-                    onTapGesture: {
-                        print("Tapped")
-                        presentNextView.toggle()
+                if !userViewModel.mealModel.isEmpty{
+                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                        MealCard(
+                            title: "Breakfast",
+                            totalCalories: "500 Calories",
+                            firstImageName: firstImageUrl,
+                            secondImageName: "eggs-on-toast",
+                            firstMeal: "Scrambled eggs on toast",
+                            secondMeal: "Scrambled eggs on toast",
+                            firstMealInfo: "2 Servings - 380 Calories",
+                            secondMealInfo: "2 Servings - 380 Calories",
+                            onTapGesture: {
+                                print("Tapped")
+                                presentNextView.toggle()
+                            }
+                        )
                     }
-                )
-                
-                MealCard(
-                    title: "Lunch",
-                    totalCalories: "500 Calories",
-                    firstImageName: "eggs-on-toast",
-                    secondImageName: "eggs-on-toast",
-                    firstMeal: "Scrambled eggs on toast",
-                    secondMeal: "Scrambled eggs on toast",
-                    firstMealInfo: "2 Servings - 380 Calories",
-                    secondMealInfo: "2 Servings - 380 Calories",
-                    onTapGesture: {
-                        
+                    
+                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                        MealCard(
+                            title: "Breakfast",
+                            totalCalories: "500 Calories",
+                            firstImageName: firstImageUrl,
+                            secondImageName: "eggs-on-toast",
+                            firstMeal: "Scrambled eggs on toast",
+                            secondMeal: "Scrambled eggs on toast",
+                            firstMealInfo: "2 Servings - 380 Calories",
+                            secondMealInfo: "2 Servings - 380 Calories",
+                            onTapGesture: {
+                                print("Tapped")
+                                presentNextView.toggle()
+                            }
+                        )
                     }
-                )
-                
-                MealCard(
-                    title: "Dinner",
-                    totalCalories: "500 Calories",
-                    firstImageName: "eggs-on-toast",
-                    secondImageName: "eggs-on-toast",
-                    firstMeal: "Scrambled eggs on toast",
-                    secondMeal: "Scrambled eggs on toast",
-                    firstMealInfo: "2 Servings - 380 Calories",
-                    secondMealInfo: "2 Servings - 380 Calories",
-                    onTapGesture: {
-                        
+                    
+                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                        MealCard(
+                            title: "Breakfast",
+                            totalCalories: "500 Calories",
+                            firstImageName: firstImageUrl,
+                            secondImageName: "eggs-on-toast",
+                            firstMeal: "Scrambled eggs on toast",
+                            secondMeal: "Scrambled eggs on toast",
+                            firstMealInfo: "2 Servings - 380 Calories",
+                            secondMealInfo: "2 Servings - 380 Calories",
+                            onTapGesture: {
+                                print("Tapped")
+                                presentNextView.toggle()
+                            }
+                        )
                     }
-                )
-                
-                MealCard(
-                    title: "Snack",
-                    totalCalories: "500 Calories",
-                    firstImageName: "eggs-on-toast",
-                    secondImageName: "eggs-on-toast",
-                    firstMeal: "Scrambled eggs on toast",
-                    secondMeal: "Scrambled eggs on toast",
-                    firstMealInfo: "2 Servings - 380 Calories",
-                    secondMealInfo: "2 Servings - 380 Calories",
-                    onTapGesture: {
-                        
+                    
+                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
+                        MealCard(
+                            title: "Breakfast",
+                            totalCalories: "500 Calories",
+                            firstImageName: firstImageUrl,
+                            secondImageName: "eggs-on-toast",
+                            firstMeal: "Scrambled eggs on toast",
+                            secondMeal: "Scrambled eggs on toast",
+                            firstMealInfo: "2 Servings - 380 Calories",
+                            secondMealInfo: "2 Servings - 380 Calories",
+                            onTapGesture: {
+                                print("Tapped")
+                                presentNextView.toggle()
+                            }
+                        )
                     }
-                )
+                }
             }
             .sheet(isPresented: $presentNextView) {
                 RecipeView()
