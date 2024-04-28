@@ -19,6 +19,7 @@ struct UserModel: Codable, Identifiable {
     var height: String
     var bmi: String
     var bmiMessage: String
+    var calories: String
     var diet: String
     var goal: String
     var allergies: [String]?

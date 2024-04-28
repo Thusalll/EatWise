@@ -11,7 +11,7 @@ struct MealCard: View {
     var title: String
     var totalCalories: String
     var firstImageName: URL
-    var secondImageName: String
+    var secondImageName: URL
     var firstMeal: String
     var secondMeal: String
     var firstMealInfo: String
@@ -80,7 +80,7 @@ struct MealCard: View {
                         
                         Text(firstMealInfo)
                             .font(Font.custom("Nunito", size: 18))
-                            .multilineTextAlignment(.center)
+                            .multilineTextAlignment(.leading)
                             .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.63))
                     }
                 }
@@ -93,27 +93,36 @@ struct MealCard: View {
                         .foregroundColor(.clear)
                         .frame(width: 53, height: 50)
                         .background(
-                            Image(secondImageName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 53, height: 50)
-                                .clipped()
+                            AsyncImage(url: secondImageName) { phase in
+                                // Handle loading, success, failure states here
+                                if let image = phase.image{
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 53, height: 50)
+                                        .clipped()
+                                } else if phase.error != nil {
+                                    // Handle error
+                                } else {
+                                    // Handle loading state
+                                    ProgressView()
+                                }
+                            }
                         )
                         .overlay(
                             Rectangle()
                                 .inset(by: 1.5)
-                                .stroke(Color("PrimaryGreen"), lineWidth: 2)
+                                .stroke(Color.primaryGreen, lineWidth: 2)
                         )
-                    
                     VStack (alignment: .leading){
                         Text(secondMeal)
                             .font(Font.custom("Nunito", size: 20))
-                            .multilineTextAlignment(.center)
+                            .multilineTextAlignment(.leading)
                             .foregroundColor(.black)
                         
                         Text(secondMealInfo)
                             .font(Font.custom("Nunito", size: 18))
-                            .multilineTextAlignment(.center)
+                            .multilineTextAlignment(.leading)
                             .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.63))
                     }
                 }

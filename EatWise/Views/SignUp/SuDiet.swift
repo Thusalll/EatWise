@@ -17,6 +17,7 @@ struct SuDiet: View {
     let height: String
     let bmi: String
     let bmiMessage: String
+    let calories: String
     let heightType: String
     let weightType: String
     let goal: String
@@ -98,12 +99,12 @@ struct SuDiet: View {
             .padding([.horizontal], 40)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $presentNextView){
-                SuAllergies(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, heightType: heightType, weightType: weightType, goal: goal, diet: diet)
+                SuAllergies(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal, diet: diet)
         }
         }
     }
 }
 
 #Preview {
-    SuDiet(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", heightType: "", weightType: "", goal: "")
+    SuDiet(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "")
 }

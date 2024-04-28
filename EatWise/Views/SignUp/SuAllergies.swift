@@ -17,6 +17,7 @@ struct SuAllergies: View {
     let height: String
     let bmi: String
     let bmiMessage: String
+    let calories: String
     let heightType: String
     let weightType: String
     let goal: String
@@ -80,7 +81,8 @@ struct SuAllergies: View {
                                                            height: height,
                                                            weight: [Weight(id: UUID().uuidString, weight: weight, day: Date())],
                                                            bmi: bmi,
-                                                           bmiMessage: bmiMessage,
+                                                           bmiMessage: bmiMessage, 
+                                                           calories: calories,
                                                            goal: goal,
                                                            diet: diet,
                                                            allergies: [],
@@ -114,5 +116,5 @@ struct SuAllergies: View {
 }
 
 #Preview {
-    SuAllergies(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", heightType: "", weightType: "", goal: "", diet: "")
+    SuAllergies(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "", diet: "")
 }

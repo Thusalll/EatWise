@@ -17,6 +17,7 @@ struct SuGoal: View {
     let height: String
     let bmi: String
     let bmiMessage: String
+    let calories: String
     let heightType: String
     let weightType: String
     @State private var selectedOption: String? = nil
@@ -98,12 +99,12 @@ struct SuGoal: View {
             .padding([.horizontal], 40)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $presentNextView){
-                SuDiet(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, heightType: heightType, weightType: weightType, goal: goal)
+                SuDiet(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal)
             }
         }
     }
 }
 
 #Preview {
-    SuGoal(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", heightType: "", weightType: "")
+    SuGoal(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "")
 }

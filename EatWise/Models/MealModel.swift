@@ -26,6 +26,7 @@ class MealModel: Codable, Identifiable {
     var balanced: Bool?
     var vegan: Bool?
     var vegetarian: Bool?
+    let mealType: String?
 }
 
 //struct Meal: Codable, Identifiable {

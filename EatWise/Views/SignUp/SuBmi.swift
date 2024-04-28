@@ -123,13 +123,6 @@ struct SuBmi: View {
                     } else {
                         weightType = "lbs"
                     }
-                    print("Name: \(firstName)")
-                    print("Name: \(lastName)")
-                    print("age: \(age)")
-                    print("email: \(email)")
-                    print("password: \(password)")
-                    print("Height: \(height) \(heightType)")
-                    print("Weight: \(weight) \(weightType)")
                 }, label: {
                     Text("Calculate BMI")
                         .padding()
@@ -194,7 +187,7 @@ struct SuBmi: View {
             .padding([.horizontal], 40)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $presentNextView){
-                SuGoal(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmiValue, bmiMessage: bmiMessage, heightType: heightType, weightType: weightType)
+                SuCalorie(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmiValue, bmiMessage: bmiMessage, heightType: heightType, weightType: weightType)
             }
         }
     }
