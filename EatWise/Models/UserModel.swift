@@ -22,6 +22,7 @@ struct UserModel: Codable, Identifiable {
     var calories: String
     var diet: String
     var goal: String
+    var goalWeight: String
     var allergies: [String]?
     var weightType: String
     var heightType: String

@@ -21,8 +21,9 @@ struct SuDiet: View {
     let heightType: String
     let weightType: String
     let goal: String
+    let goalWeight: String
     @State private var selectedOption: String? = nil
-    @State private var selectedOptions: [String]? = nil
+    @State private var selectedOptions: [String] = []
     @State private var diet: String = ""
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
@@ -99,12 +100,12 @@ struct SuDiet: View {
             .padding([.horizontal], 40)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $presentNextView){
-                SuAllergies(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal, diet: diet)
+                SuAllergies(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal, goalWeight: goalWeight, diet: diet)
         }
         }
     }
 }
 
 #Preview {
-    SuDiet(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "")
+    SuDiet(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "", goalWeight: "")
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GoalView: View {
     @State private var selectedOption: String?
-    @State private var selectedOptions: [String]? = nil
+    @State private var selectedOptions: [String] = []
     @State private var isMaintainWeightSelected = true
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var userViewModel: UserViewModel
@@ -68,7 +68,6 @@ struct GoalView: View {
             .onAppear {
                 // Initialize selectedOption with the value from ViewModel
                 selectedOption = userViewModel.userModel?.goal
-                print(selectedOption)
             }
         
         

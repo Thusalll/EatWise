@@ -37,7 +37,7 @@ struct NutritionCard: View {
             HStack(alignment: .top, spacing: 16) {
                 VStack(alignment: .leading, spacing: 4) {
                     
-                    ProgressView(value: progress, total: 90)
+                    ProgressView(value: progress, total: 100)
                         .progressViewStyle(.linear)
                         .tint(Color(red: 0.95, green: 0.86, blue: 0.51))
                     

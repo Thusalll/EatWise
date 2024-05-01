@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DietView: View {
     @State private var selectedOption: String?
-    @State private var selectedOptions: [String]? = nil
+    @State private var selectedOptions: [String] = []
     @State private var isMaintainWeightSelected = true
     @Environment(\.presentationMode) var presentationMode
 
@@ -60,7 +60,6 @@ struct DietView: View {
                 SaveButton(text: "Save", action: {
                     Task{
                         await userViewModel.updateUserDiet(newDiet: selectedOption ?? "")
-                        // Dismiss the GoalView and go back to the previous view (ProfileView)
                         presentationMode.wrappedValue.dismiss()
                     }
                 })
@@ -71,7 +70,6 @@ struct DietView: View {
             .onAppear {
                 // Initialize selectedOption with the value from ViewModel
                 selectedOption = userViewModel.userModel?.diet
-                print(selectedOption)
             }
         
         

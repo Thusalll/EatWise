@@ -21,9 +21,11 @@ struct SuAllergies: View {
     let heightType: String
     let weightType: String
     let goal: String
+    let goalWeight: String
     let diet: String
-    @State private var selectedOption: String? = nil
-    @State private var selectedOptions: [String]? = nil
+    
+    @State private var selectedOption: String? = nil  // For single selection
+    @State private var selectedOptions: [String] = []
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
     @EnvironmentObject var userViewModel: UserViewModel
@@ -84,8 +86,9 @@ struct SuAllergies: View {
                                                            bmiMessage: bmiMessage, 
                                                            calories: calories,
                                                            goal: goal,
+                                                           goalWeight: goalWeight,
                                                            diet: diet,
-                                                           allergies: [],
+                                                           allergies: selectedOptions,
                                                            weightType: weightType,
                                                            heightType: heightType
                         )
@@ -116,5 +119,5 @@ struct SuAllergies: View {
 }
 
 #Preview {
-    SuAllergies(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "", diet: "")
+    SuAllergies(firstName: "", lastName: "", age: "", email: "", password: "", weight: "", height: "", bmi: "", bmiMessage: "", calories: "", heightType: "", weightType: "", goal: "", goalWeight: "", diet: "")
 }

@@ -46,7 +46,7 @@ struct WeeklyPlanView: View {
                     }
                 }
             }
-            .padding(.horizontal)
+            .padding([.horizontal, .bottom])
             
             if let mealsForSelectedDate = userViewModel.weeklyMealPlan[selectedDateIndex] {
                 VStack(spacing: 16) {
@@ -96,7 +96,7 @@ struct WeeklyPlanView: View {
                 }
             } else {
                 Text("No meals available for this date.")
-                    .padding()
+                    .padding(.top, 50)
             }
         }
         .sheet(isPresented: $presentNextView) {

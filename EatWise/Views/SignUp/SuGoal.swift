@@ -21,10 +21,12 @@ struct SuGoal: View {
     let heightType: String
     let weightType: String
     @State private var selectedOption: String? = nil
-    @State private var selectedOptions: [String]? = nil
+    @State private var selectedOptions: [String] = []
     @State private var goal: String = ""
     @State private var isMaintainWeightSelected = true
     @State private var presentNextView = false
+    @State private var selectedWeightType = 1
+    @State private var goalWeight: String = ""
     
     var options: [String] = ["Lose Weight", "Maintain Weight", "Gain Weight"]
     
@@ -64,15 +66,30 @@ struct SuGoal: View {
                         RadioButton(selectedOption: $selectedOption, selectedOptions: $selectedOptions, isSingleSelection: true, option: option)
                     }
                 }
-                .padding(.top)
+                .padding([.top, .bottom])
                 
-                Spacer()
-                    .frame(height: 100)
+                HStack {
+                    textField(text: $goalWeight, placeholder: "Weight")
+                        .keyboardType(.decimalPad)
+                        .padding(.trailing)
+                    Picker("Select Height", selection: $selectedWeightType) {
+                        Text("Kg").tag(1)
+                        Text("lbs").tag(2)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+                
                 
                 // Next Button
                 button(text: "Next", action: {
+                    if selectedWeightType == 1 {
+                        goalWeight = goalWeight + " kg"
+                    } else {
+                        goalWeight = goalWeight + " lbs"
+                    }
+                    
                     goal = selectedOption ?? ""
-                    if !goal.isEmpty{
+                    if !goal.isEmpty && !goalWeight.isEmpty{
                         print(goal)
                         presentNextView.toggle()
                     }
@@ -99,7 +116,7 @@ struct SuGoal: View {
             .padding([.horizontal], 40)
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $presentNextView){
-                SuDiet(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal)
+                SuDiet(firstName: firstName, lastName: lastName, age: age, email: email, password: password, weight: weight, height: height, bmi: bmi, bmiMessage: bmiMessage, calories: calories, heightType: heightType, weightType: weightType, goal: goal, goalWeight: goalWeight)
             }
         }
     }

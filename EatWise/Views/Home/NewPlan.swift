@@ -12,6 +12,7 @@ struct NewPlan: View {
     @State private var selectedDate = Date()
     @State private var showDatePicker = false
     @State private var presentNextView = false
+    @EnvironmentObject var userViewModel: UserViewModel
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -54,17 +55,6 @@ struct NewPlan: View {
                         Font.custom("Nunito", size: 24)
                             .weight(.bold)
                     )
-                    .onTapGesture {
-                        Button(action: {
-                            self.showDatePicker = true
-                        }) {
-                            Image(systemName: "calendar")
-                                .foregroundColor(.gray)
-                        }
-                        .sheet(isPresented: $showDatePicker) {
-                            DatePicker("Select a date", selection: self.$selectedDate, displayedComponents: .date)
-                        }
-                    }
                 
                 Spacer()
                 Button(action: {
@@ -86,7 +76,9 @@ struct NewPlan: View {
             )
             .padding(.vertical)
             
-            Button(action: {}, label: {
+            Button(action: {
+                _ = userViewModel.createMealPlan()
+            }, label: {
                 Text("Generate\na New\n Daily Plan")
             })
             .frame(width: 180, height: 226)

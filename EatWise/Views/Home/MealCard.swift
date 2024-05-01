@@ -16,9 +16,11 @@ struct MealCard: View {
     var secondMeal: String
     var firstMealInfo: String
     var secondMealInfo: String
+    @State var markColour = false
     var onTapGesture: () -> Void
     var onTapGesture2: () -> Void
     var regenerateMeal: () -> Void
+    var markMeal: () -> Void
     
     var body: some View {
         VStack(alignment: .leading){
@@ -32,10 +34,11 @@ struct MealCard: View {
                 
                 Image(systemName: "checkmark.circle")
                     .imageScale(.large)
-                //.foregroundColor(.green)
+                    .foregroundColor(markColour ? .green : .gray)
                     .padding(.trailing)
                     .onTapGesture {
-                        
+                        markMeal()
+                        markColour.toggle()
                     }
                 
                 Image(systemName: "arrow.counterclockwise")

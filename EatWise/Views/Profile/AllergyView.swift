@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct AllergyView: View {
-    @State private var selectedOption = ""
-    @State private var isMaintainWeightSelected = true
-    @State private var presentNextView = false
+    @State private var selectedOption: String?
+    @State private var selectedOptions: [String] = []
+    
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var options: [String] = ["Fish", "Nuts", "Milk", "Cheese", "Wheat", "Shellfish"]
     
     var body: some View {
-        
         ScrollView {
             VStack {
                 HStack {
@@ -46,7 +47,7 @@ struct AllergyView: View {
                 
                 
                 ForEach(options, id: \.self) { option in
-                    //RadioButton(option: option)
+                    RadioButton(selectedOption: $selectedOption, selectedOptions: $selectedOptions, isSingleSelection: false, option: option)
                 }
                 
                 
@@ -54,13 +55,20 @@ struct AllergyView: View {
                 .listStyle(.plain)
                 .foregroundStyle(.primaryGreen)
                 
-                SaveButton(text: "Save", action: {})
+                SaveButton(text: "Save", action: {
+                    Task{
+                        await userViewModel.updateUserAllergies(newAllergies: selectedOptions)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                })
                     .padding()
                 Spacer()
             }
             .padding(.horizontal)
         }
-        
+        .onAppear{
+            selectedOptions = userViewModel.userModel?.allergies ?? []
+        }
     }
 }
 

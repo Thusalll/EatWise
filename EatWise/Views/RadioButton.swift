@@ -8,85 +8,53 @@
 import SwiftUI
 
 struct RadioButton: View {
-    @Binding var selectedOption: String?
-    @Binding var selectedOptions: [String]?
-    var isSingleSelection = true
-    var option:String
+    @Binding var selectedOption: String? // For single selection
+    @Binding var selectedOptions: [String] // For multiple selection
+    var isSingleSelection: Bool = true
+    var option: String
+
     var body: some View {
-        
-        if isSingleSelection{
-            HStack {
-                Text(option)
-                    .padding()
-                    .font(
-                        Font.custom("Nunito", size: 22)
-                            .weight(.bold)
-                    )
-                Spacer()
-                Image(systemName: selectedOption == option ? "circle.fill" : "circle")
-                    .foregroundColor(Color("PrimaryGreen"))
-                    .padding()
-            }
-            .onTapGesture {
-                if (selectedOption == option) {
-                    // Deselect if already selected
-                    selectedOption = nil
-                    //print("option: \(selectedOption)")
+        HStack {
+            Text(option)
+                .padding()
+                .font(
+                    Font.custom("Nunito", size: 22)
+                        .weight(.bold)
+                )
+            Spacer()
+            Image(systemName: isSelected() ? "circle.fill" : "circle")
+                .foregroundColor(Color("PrimaryGreen"))
+                .padding()
+        }
+        .onTapGesture {
+            if isSingleSelection {
+                selectedOption = (selectedOption == option) ? nil : option
+            } else {
+                if selectedOptions.contains(option) {
+                    selectedOptions.removeAll(where: { $0 == option })
                 } else {
-                    // Select if not selected
-                    selectedOption = option
-                } 
-            }
-            .frame(width: 310, height: 60)
-            .background(selectedOption == option ? Color("SecondaryGreen") : .clear)
-            .overlay(
-                Rectangle()
-                    .inset(by: 0.5)
-                    .stroke(Color("PrimaryGreen"), lineWidth: 2)
-            )
-            .padding(.top)
-        } else {
-            HStack {
-                Text(option)
-                    .padding()
-                    .font(
-                        Font.custom("Nunito", size: 22)
-                            .weight(.bold)
-                    )
-                Spacer()
-                Image(systemName: selectedOption == option ? "circle.fill" : "circle")
-                    .foregroundColor(Color("PrimaryGreen"))
-                    .padding()
-            }
-            .onTapGesture {
-                if var selectedOptions = selectedOptions {
-                    if selectedOptions.contains(option) {
-                        // Deselect if already selected
-                        selectedOptions.removeAll { $0 == option }
-                    } else {
-                        // Select if not selected
-                        selectedOptions.append(option)
-                    }
-                    self.selectedOptions = selectedOptions.isEmpty ? nil : selectedOptions
-                } else {
-                    // If no options selected yet, create a new array with the selected option
-                    selectedOptions = [option]
+                    selectedOptions.append(option)
                 }
             }
-            .frame(width: 310, height: 60)
-            .background(selectedOption == option ? Color("SecondaryGreen") : .clear)
-            .overlay(
-                Rectangle()
-                    .inset(by: 0.5)
-                    .stroke(Color("PrimaryGreen"), lineWidth: 2)
-            )
-            .padding(.top)
         }
-        
+        .frame(width: 310, height: 60)
+        .background(isSelected() ? Color("SecondaryGreen") : .clear)
+        .overlay(
+            Rectangle()
+                .inset(by: 0.5)
+                .stroke(Color("PrimaryGreen"), lineWidth: 2)
+        )
+        .padding(.top)
+    }
+
+    // function to check the selection status
+    private func isSelected() -> Bool {
+        if isSingleSelection {
+            return selectedOption == option
+        } else {
+            return selectedOptions.contains(option)
+        }
     }
 }
 
-#Preview {
-    RadioButton(selectedOption: .constant(nil), selectedOptions: .constant(nil), option: "Gain Weight")
-    
-}
+

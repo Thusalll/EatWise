@@ -11,6 +11,8 @@ import Charts
 struct WeightGraph: View {
     @EnvironmentObject var userViewModel: UserViewModel
     
+    
+    
     var body: some View {
         if let userModel = userViewModel.userModel {
             let sortedWeightData = userModel.weight.sorted { $0.day < $1.day }
@@ -19,7 +21,7 @@ struct WeightGraph: View {
                     LineMark(x: .value("Date", datum.day, unit: .day), y: .value("Weight", Double(datum.weight) ?? 0.0 ))
                 }
                 RuleMark(
-                    y: .value("Threshold", 75)
+                    y: .value("Threshold", Double(userViewModel.userModel?.goalWeight.replacingOccurrences(of: " kg", with: "") ?? "") ?? 0.0)
                 )
                 .foregroundStyle(Color.blue)
             }
