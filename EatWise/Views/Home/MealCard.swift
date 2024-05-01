@@ -17,6 +17,8 @@ struct MealCard: View {
     var firstMealInfo: String
     var secondMealInfo: String
     var onTapGesture: () -> Void
+    var onTapGesture2: () -> Void
+    var regenerateMeal: () -> Void
     
     var body: some View {
         VStack(alignment: .leading){
@@ -38,6 +40,9 @@ struct MealCard: View {
                 
                 Image(systemName: "arrow.counterclockwise")
                     .imageScale(.large)
+                    .onTapGesture {
+                        regenerateMeal()
+                    }
             }
             
             Text(totalCalories)
@@ -79,7 +84,7 @@ struct MealCard: View {
                             .foregroundColor(.black)
                         
                         Text(firstMealInfo)
-                            .font(Font.custom("Nunito", size: 18))
+                            .font(Font.custom("Nunito", size: 16))
                             .multilineTextAlignment(.leading)
                             .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.63))
                     }
@@ -121,11 +126,14 @@ struct MealCard: View {
                             .foregroundColor(.black)
                         
                         Text(secondMealInfo)
-                            .font(Font.custom("Nunito", size: 18))
+                            .font(Font.custom("Nunito", size: 16))
                             .multilineTextAlignment(.leading)
                             .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.63))
                     }
                 }
+            }
+            .onTapGesture {
+                onTapGesture2()
             }
             .padding(.vertical)
             .frame(maxWidth: .infinity)

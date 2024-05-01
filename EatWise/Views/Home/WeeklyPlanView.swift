@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct WeeklyPlanView: View {
-    @State private var selectedDate: Date = Date()
-    @State private var presentNextView = false
+    @State private var selectedDateIndex = ""
     @EnvironmentObject var userViewModel: UserViewModel
+    @State private var presentNextView = false
     
     let daysOfWeek: [String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     let startOfWeek: Date
@@ -18,127 +18,99 @@ struct WeeklyPlanView: View {
     init() {
         let calendar = Calendar.current
         startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+        selectedDateIndex = formatDate(date: Date())
     }
     
-    var body: some View {
-        
-        ScrollView {
-            VStack{
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(0..<7) { index in
-                            let date = Calendar.current.date(byAdding: .day, value: index, to: self.startOfWeek)!
-                            Text(formatDate(date: date))
-                                .font(Font.custom("Nunito-Bold", size: 14))
-                                .frame(width: 17)
-                                .padding()
-                                .foregroundStyle(Color.black)
-                                .background(self.isSelectedDate(date: date) ? Color.secondaryGreen : Color.gray.opacity(0.5))
-                                .clipShape(.circle)
-                                .onTapGesture {
-                                    self.selectedDate = date
-                                }
-                        }
-                    }
-                }
-                .scrollIndicators(.hidden )
-                .padding(.top)
-                
-                NutritionCard(
-                    title: "2000 Calories",
-                    subtitle: "0/2000",
-                    progress: 1,
-                    progressText: "0%",
-                    total: "195g Carbs, 81g Fat, 117g Protein"
-                )
-                .padding(.top)
-                
-                if !userViewModel.mealModel.isEmpty{
-                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
-                        MealCard(
-                            title: "Breakfast",
-                            totalCalories: "500 Calories",
-                            firstImageName: firstImageUrl,
-                            secondImageName: firstImageUrl,
-                            firstMeal: "Scrambled eggs on toast",
-                            secondMeal: "Scrambled eggs on toast",
-                            firstMealInfo: "2 Servings - 380 Calories",
-                            secondMealInfo: "2 Servings - 380 Calories",
-                            onTapGesture: {
-                                print("Tapped")
-                                presentNextView.toggle()
-                            }
-                        )
-                    }
-                    
-                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
-                        MealCard(
-                            title: "Breakfast",
-                            totalCalories: "500 Calories",
-                            firstImageName: firstImageUrl,
-                            secondImageName: firstImageUrl,
-                            firstMeal: "Scrambled eggs on toast",
-                            secondMeal: "Scrambled eggs on toast",
-                            firstMealInfo: "2 Servings - 380 Calories",
-                            secondMealInfo: "2 Servings - 380 Calories",
-                            onTapGesture: {
-                                print("Tapped")
-                                presentNextView.toggle()
-                            }
-                        )
-                    }
-                    
-                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
-                        MealCard(
-                            title: "Breakfast",
-                            totalCalories: "500 Calories",
-                            firstImageName: firstImageUrl,
-                            secondImageName: firstImageUrl,
-                            firstMeal: "Scrambled eggs on toast",
-                            secondMeal: "Scrambled eggs on toast",
-                            firstMealInfo: "2 Servings - 380 Calories",
-                            secondMealInfo: "2 Servings - 380 Calories",
-                            onTapGesture: {
-                                print("Tapped")
-                                presentNextView.toggle()
-                            }
-                        )
-                    }
-                    
-                    if let firstImageUrl = URL(string: userViewModel.mealModel[0].image){
-                        MealCard(
-                            title: "Breakfast",
-                            totalCalories: "500 Calories",
-                            firstImageName: firstImageUrl,
-                            secondImageName: firstImageUrl,
-                            firstMeal: "Scrambled eggs on toast",
-                            secondMeal: "Scrambled eggs on toast",
-                            firstMealInfo: "2 Servings - 380 Calories",
-                            secondMealInfo: "2 Servings - 380 Calories",
-                            onTapGesture: {
-                                print("Tapped")
-                                presentNextView.toggle()
-                            }
-                        )
-                    }
-                }
-            }
-            .sheet(isPresented: $presentNextView) {
-                RecipeView()
-        }
-        }
-    }
     private func formatDate(date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d"
+        dateFormatter.dateFormat = "EEEE"
         return dateFormatter.string(from: date)
     }
     
-    private func isSelectedDate(date: Date) -> Bool {
-        return Calendar.current.isDate(self.selectedDate, inSameDayAs: date)
+    
+    var body: some View {
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(0..<7, id: \.self) { index in
+                        let date = Calendar.current.date(byAdding: .day, value: index, to: self.startOfWeek)!
+                        Button(action: {
+                            self.selectedDateIndex = self.formatDate(date: date)
+                        }) {
+                            Text(self.daysOfWeek[index])
+                                .padding(10)
+                                .foregroundColor(self.selectedDateIndex == self.formatDate(date: date) ? .white : .primary)
+                                .background(self.selectedDateIndex == self.formatDate(date: date) ? Color.primaryGreen : Color.clear)
+                                .cornerRadius(8)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal)
+            
+            if let mealsForSelectedDate = userViewModel.weeklyMealPlan[selectedDateIndex] {
+                VStack(spacing: 16) {
+                    ForEach(mealsForSelectedDate) { meal in
+                        if let firstImageURL = URL(string: meal.image) {
+                            HStack(spacing: 16) {
+                                AsyncImage(url: firstImageURL) { phase in
+                                    if let image = phase.image {
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 80, height: 80)
+                                            .clipped()
+                                    } else if phase.error != nil {
+                                        // Handle error
+                                    } else {
+                                        ProgressView()
+                                    }
+                                }
+                                .frame(width: 80, height: 80)
+                                .background(Color.gray.opacity(0.2))
+                                .cornerRadius(8)
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(meal.mealType?.capitalized ?? "")
+                                        .font(.system(size: 16, weight: .semibold))
+                                    Text(meal.meal)
+                                        .font(.system(size: 14))
+                                    Text("Serving: \(meal.serving) - \(meal.calories) calories")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.gray)
+                                }
+                                
+                                Spacer()
+                            }
+                            .onTapGesture {
+                                userViewModel.selectedMeal = meal
+                                presentNextView.toggle()
+                            }
+                            .padding(.horizontal)
+                        } else {
+                            Text("Invalid image URL")
+                                .foregroundColor(.secondary)
+                                .padding(.top)
+                        }
+                    }
+                }
+            } else {
+                Text("No meals available for this date.")
+                    .padding()
+            }
+        }
+        .sheet(isPresented: $presentNextView) {
+            RecipeView()
+        }
+        .onAppear {  // Set selectedDateIndex to current date on first appearance
+            self.selectedDateIndex = self.formatDate(date: Date())
+        }
     }
 }
 
-#Preview {
-    WeeklyPlanView()
+struct WeeklyMealView_Previews: PreviewProvider {
+    static var previews: some View {
+        WeeklyPlanView()
+            .environmentObject(UserViewModel())
+    }
 }

@@ -15,15 +15,30 @@ class UserViewModel: ObservableObject {
     @Published var userModel: UserModel?
     @Published var mealModel: [MealModel] = []
     @Published var mealPlan: [String: [MealModel]] = [:]
+    @Published var weeklyMealPlan: [String: [MealModel]] = [:]
+    @Published var selectedMeal: MealModel?
+    let db = Firestore.firestore()
     
     init() {
         self.userSession = Auth.auth().currentUser
-        
-        Task{
-            await fetchUser()
-            await fetchMeals()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        Task {
+            do {
+                await fetchUser()
+                await fetchMeals()
+
+                // Get the current date
+                let currentDate = Date()
+                try await retrieveDailyMealPlan(date: currentDate)
+                try await retrieveWeeklyMealPlan()
+            } catch {
+                // Handle potential errors here
+            }
         }
     }
+
     
     init(userSession: FirebaseAuth.User? = nil, userModel: UserModel? = nil) {
         self.userSession = userSession
@@ -172,13 +187,13 @@ class UserViewModel: ObservableObject {
                     return false
                 }
             }
-
+            
             let _: [String: String?] = [
-              "Balanced": "balanced",
-              "Vegan": "vegan",
-              "Vegetarian": "vegetarian"
+                "Balanced": "balanced",
+                "Vegan": "vegan",
+                "Vegetarian": "vegetarian"
             ]
-
+            
             let mealsForDietAndType = mealsForType.filter { meal in
                 guard let userDiet = self.userModel?.diet else {
                     return true // Include if user's diet preference is not specified
@@ -194,13 +209,13 @@ class UserViewModel: ObservableObject {
                     return true // Include if user's diet preference is invalid
                 }
             }
-
+            
             let totalCaloriesForType = mealsForDietAndType.reduce(0.0) { $0 + Double($1.calories) }
             var selectedMeals: [MealModel] = []
             var remainingCalories = calories
             
             // Shuffle the meals for variety
-            var shuffledMeals = mealsForDietAndType.shuffled()
+            let shuffledMeals = mealsForDietAndType.shuffled()
             
             // Select up to 2 meals for this meal type
             var closestCaloriesDifference = Double.infinity
@@ -216,19 +231,67 @@ class UserViewModel: ObservableObject {
                     }
                 }
             }
-
+            
             mealPlan[mealType] = selectedMeals
-//            print("Selected meal: \(selectedMeals)")
-//            print("remainingCalories: \(remainingCalories)")
-//            print("DIET: \(self.userModel?.diet)")
+            //            print("Selected meal: \(selectedMeals)")
+            //            print("remainingCalories: \(remainingCalories)")
+            //            print("DIET: \(self.userModel?.diet)")
         }
         
         return mealPlan
     }
-
+    
+    func generateMealsForMealType(_ mealType: String) -> [MealModel] {
+        // Filter meals based on meal type
+        let mealsForType = mealModel.filter { meal in
+            switch mealType {
+            case "breakfast":
+                return meal.breakfast ?? false
+            case "lunch":
+                return meal.lunch ?? false
+            case "dinner":
+                return meal.dinner ?? false
+            default:
+                return false
+            }
+        }
+        
+        let mealsForDietAndType = mealsForType.filter { meal in
+            guard let userDiet = self.userModel?.diet else {
+                return true // Include if user's diet preference is not specified
+            }
+            switch userDiet {
+            case "Balanced":
+                return meal.balanced == true
+            case "Vegan":
+                return meal.vegan == true
+            case "Vegetarian":
+                return meal.vegetarian == true
+            default:
+                return true // Include if user's diet preference is invalid
+            }
+        }
+        
+        var selectedMeals: [MealModel] = []
+        var remainingCalories = Double(userModel?.calories ?? "0") ?? 0.0
+        
+        // Shuffle the meals for variety
+        let shuffledMeals = mealsForDietAndType.shuffled()
+        
+        // Select up to 2 meals for this meal type
+        for meal in shuffledMeals {
+            if selectedMeals.count < 2 && remainingCalories - Double(meal.calories) >= 0 {
+                selectedMeals.append(meal)
+                remainingCalories -= Double(meal.calories)
+            }
+        }
+        
+        return selectedMeals
+    }
+    
     // Fetch meals for each meal type
     func fetchMealsForMealType(mealType: String) async {
-        guard let currentUserID = Auth.auth().currentUser?.uid else { return }
+        guard (Auth.auth().currentUser?.uid) != nil else { return }
         
         let query = Firestore.firestore().collection("meals").whereField(mealType, isEqualTo: true)
         
@@ -244,11 +307,228 @@ class UserViewModel: ObservableObject {
         }
     }
     
+    private func formatDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from: date)
+    }
+    
+    func generateWeeklyMealPlan() {
+        // Generate meal plans for each day of the week
+        let mealTypes = ["breakfast", "lunch", "dinner"]
+        for dayIndex in 0..<7 {
+            var dailyMealPlan: [MealModel] = []
+            for mealType in mealTypes {
+                // Generate meals for the meal type and add them to the daily meal plan
+                let generatedMeals = generateMealsForMealType(mealType)
+                // Set the mealType property for each generated meal
+                for meal in generatedMeals {
+                    meal.mealType = mealType
+                    dailyMealPlan.append(meal)
+                }
+            }
+            // Add the daily meal plan to the weekly meal plan
+            let dayKey = formatDate(date: Calendar.current.date(byAdding: .day, value: dayIndex, to: Date())!)
+            weeklyMealPlan[dayKey] = dailyMealPlan
+        }
+    }
+    
     // Fetch meals for all meal types
     func fetchMeals() async {
         await fetchMealsForMealType(mealType: "breakfast")
         await fetchMealsForMealType(mealType: "lunch")
         await fetchMealsForMealType(mealType: "dinner")
     }
+    
+    func saveDailyMealPlan(date: Date, mealPlan: [String: [MealModel]]) {
+        guard let userId = userModel?.id else {
+            print("User ID not found")
+            return
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        print(dateString)
+
+        let docRef = db.collection("userMeals").document(userId).collection("dailyMealPlans").document(dateString)
+
+        let firestoreMealPlan = mealPlan.mapValues { meals in
+            meals.map { $0.dictionaryRepresentation() }
+        }
+
+        do {
+            try docRef.setData(firestoreMealPlan)
+        } catch let error {
+            print("Error saving meal plan: \(error)")
+        }
+    }
+    
+    func saveWeeklyMealPlan(weeklyMealPlan: [String: [MealModel]]) {
+        guard let userId = userModel?.id else {
+            print("User ID not found")
+            return
+        }
+
+        // Prepare weekly plan data (directly update the dictionary)
+        var weeklyPlanData: [String: [[String: Any]]] = [:]
+        for (day, meals) in weeklyMealPlan {
+            weeklyPlanData[day] = meals.map { $0.dictionaryRepresentation() }
+        }
+
+        let docRef = db.collection("userMeals").document(userId).collection("weeklyMealPlans").document("currentWeek")
+
+        do {
+            try docRef.setData(weeklyPlanData) // Use the prepared weeklyPlanData
+        } catch let error {
+            print("Error saving weekly meal plan: \(error)")
+        }
+    }
+
+    func retrieveWeeklyMealPlan() async throws -> [String: [MealModel]] {
+        guard let userId = userModel?.id else {
+            print("User ID not found")
+            return [:] // Return an empty plan
+        }
+
+        let docRef = db.collection("userMeals").document(userId).collection("weeklyMealPlans").document("currentWeek")
+
+        do {
+            let snapshot = try await docRef.getDocument()
+            if snapshot.exists, let data = snapshot.data() {
+                if let firestoreMealPlan = data as? [String: [[String: Any]]] {
+                    
+                    // Convert the retrieved data to your MealModel format
+                    let weeklyMealPlan = firestoreMealPlan.mapValues { mealsData in
+                        mealsData.compactMap { MealModel(from: $0) }
+                    }
+                    self.weeklyMealPlan = weeklyMealPlan
+                    return weeklyMealPlan
+                } else {
+                    throw WeeklyPlanError.conversionError
+                }
+            } else {
+                throw WeeklyPlanError.planNotFound
+            }
+        } catch {
+            throw error // Handle or propagate as needed
+        }
+    }
+
+
+    // Example of a custom error type
+    enum WeeklyPlanError: Error {
+        case conversionError
+        case planNotFound
+    }
+
+    func retrieveDailyMealPlan(date: Date) async throws {
+        guard let userId = self.userModel?.id else {
+            print("User ID not found")
+            return
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        let docRef = db.collection("userMeals").document(userId).collection("dailyMealPlans").document(dateString)
+
+        do {
+            let snapshot = try await docRef.getDocument() // Use 'await'
+            
+            if snapshot.exists {
+                if let data = snapshot.data(),
+                   let firestoreMealPlan = data as? [String: [[String: Any]]] {
+
+                    let mealPlan = firestoreMealPlan.mapValues { mealsData in
+                        mealsData.compactMap { MealModel(from: $0) }
+                    }
+
+                    self.mealPlan = mealPlan
+                    return // Assuming you want to return here if the data is retrieved
+                } else {
+                    throw MealPlanError.conversionError // Create a custom error type (explained below)
+                }
+            } else {
+                throw MealPlanError.mealPlanNotFound
+            }
+
+        } catch {
+            throw error // Propagate or handle the error specifically
+        }
+    }
+
+    // A simple example of a custom error enum
+    enum MealPlanError: Error {
+        case conversionError
+        case mealPlanNotFound
+    }
+
 }
 
+//    func saveMealPlansToFirebase(date: Date, userID: String, dailyPlan: [String: [MealModel]], weeklyPlan: [String: [MealModel]]) {
+//        // Get a reference to the Firestore database
+//        let db = Firestore.firestore()
+//
+//        // Create a reference to the user's document in the "userMeals" collection
+//        let userMealsRef = db.collection("userMeals").document(userID)
+//
+//        // Prepare daily plan data with date
+//        var dailyPlanData: [[String: Any]] = []
+//        for (mealType, meals) in dailyPlan {
+//            dailyPlanData.append([
+//                "mealType": mealType,
+//                "meals": meals.map { $0.dictionaryRepresentation() }
+//            ])
+//        }
+//
+//        // Prepare weekly plan data
+//        var weeklyPlanData: [String: [[String: Any]]] = [:]
+//        for (day, meals) in weeklyPlan {
+//            weeklyPlanData[day] = meals.map { $0.dictionaryRepresentation() }
+//        }
+//
+//        // Reference to dailyPlans subcollection
+//        let dailyPlansRef = userMealsRef.collection("dailyPlans")
+//
+//        // Reference to weeklyPlans subcollection
+//        let weeklyPlansRef = userMealsRef.collection("weeklyPlans")
+//
+//        // Query dailyPlans to check if there's an existing document for the given date
+//        dailyPlansRef.whereField("date", isEqualTo: Timestamp(date: date)).getDocuments { (snapshot, error) in
+//            if let error = error {
+//                print("Error querying dailyPlans: \(error)")
+//                return
+//            }
+//
+//            // If document exists for the given date, update its data
+//            if let document = snapshot?.documents.first {
+//                document.reference.setData(["plan": dailyPlanData]) { error in
+//                    if let error = error {
+//                        print("Error updating daily plan: \(error)")
+//                    } else {
+//                        print("Daily plan updated successfully")
+//                    }
+//                }
+//            } else {
+//                // Otherwise, create a new document for the given date
+//                let dailyPlanRef = dailyPlansRef.document()
+//                dailyPlanRef.setData(["date": Timestamp(date: date), "plan": dailyPlanData]) { error in
+//                    if let error = error {
+//                        print("Error saving daily plan: \(error)")
+//                    } else {
+//                        print("Daily plan saved successfully")
+//                    }
+//                }
+//            }
+//        }
+//
+//        // Create a new document in the weeklyPlans subcollection
+//        // You can set a specific document ID here if needed
+//        weeklyPlansRef.addDocument(data: ["plan": weeklyPlanData]) { error in
+//            if let error = error {
+//                print("Error saving weekly plan: \(error)")
+//            } else {
+//                print("Weekly plan saved successfully")
+//            }
+//        }
+//    }

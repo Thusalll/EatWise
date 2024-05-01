@@ -19,7 +19,6 @@ struct EatWiseApp: App {
     var body: some Scene {
         WindowGroup {
             RootView().environmentObject(userViewModel)
-            //NavBar()
         }
     }
 }

@@ -22,11 +22,11 @@ struct NutritionCard: View {
                     .frame(width: 62, height: 65)
                 VStack (alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(Font.custom("Nunito-Bold", size: 24))
+                        .font(Font.custom("Nunito-Bold", size: 20))
                         .foregroundColor(.white)
                     
                     Text(total)
-                        .font(Font.custom("Nunito", size: 18))
+                        .font(Font.custom("Nunito", size: 16))
                         .foregroundColor(.white)
                     
                 }
