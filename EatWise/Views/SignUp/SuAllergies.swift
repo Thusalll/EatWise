@@ -93,7 +93,7 @@ struct SuAllergies: View {
                                                            heightType: heightType
                         )
                     }
-                })
+                }, color: .primaryGreen)
                 .padding([.top], 25)
                 .padding([.bottom], 5)
                 

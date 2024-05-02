@@ -22,6 +22,7 @@ struct SuBmi: View {
     @State private var bmiMessage: String = ""
     @State private var weightType: String = ""
     @State private var heightType: String = ""
+    @State private var disabled = false
     
     func calculateBMI() {
         guard let weightValue = Double(weight) else {
@@ -113,6 +114,7 @@ struct SuBmi: View {
                 
                 Button(action: {
                     calculateBMI()
+                    disabled.toggle()
                     if (selectedHeightType == 1) {
                         heightType = "Cm"
                     } else {
@@ -127,10 +129,11 @@ struct SuBmi: View {
                     Text("Calculate BMI")
                         .padding()
                         .foregroundStyle(.white)
-                        .background(.primaryGreen)
+                        .background(.primaryGreen.opacity(weight.isEmpty || height.isEmpty ? 0.3 : 1.0))
                         .cornerRadius(10)
                         .padding([.bottom], 40)
                 })
+                .disabled(weight.isEmpty || height.isEmpty)
                 
                 VStack (alignment: .center){
                     if (!bmiValue.isEmpty){
@@ -163,7 +166,10 @@ struct SuBmi: View {
                         presentNextView.toggle()
                     }
                     
-                })
+                }, 
+                       color: .primaryGreen.opacity(disabled ? 1.0 : 0.3)
+                )
+                .disabled(bmiValue.isEmpty)
                 .padding([.top], 70)
                 .padding([.bottom], 5)
                 

@@ -10,6 +10,7 @@ import SwiftUI
 struct button: View {
     var text: String
     var action: () -> Void
+    var color: Color
     
     var body: some View {
         HStack {
@@ -21,7 +22,7 @@ struct button: View {
                     )
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color("PrimaryGreen"))
+                    .background(color)
                     .cornerRadius(15)
             }
         }
@@ -30,5 +31,5 @@ struct button: View {
 
 
 #Preview {
-    button(text: "text", action: {})
+    button(text: "text", action: {}, color: .primaryGreen)
 }

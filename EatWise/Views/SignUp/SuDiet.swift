@@ -77,7 +77,10 @@ struct SuDiet: View {
                     if !diet.isEmpty{
                         presentNextView.toggle()
                     }
-                })
+                }, 
+                       color: .primaryGreen.opacity((selectedOption == nil) ? 0.3 : 1.0)
+                )
+                .disabled((selectedOption == nil))
                 .padding([.top], 5)
                 .padding([.bottom], 5)
                 

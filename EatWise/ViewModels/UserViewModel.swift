@@ -33,11 +33,12 @@ class UserViewModel: ObservableObject {
                 let currentDate = Date()
                 try await retrieveDailyMealPlan(date: currentDate)
 
+                _ = try await retrieveWeeklyMealPlan()
+                
                 // Calculate tomorrow's date
                 let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
                 try await retrieveNextDayMealPlan(date: tomorrow)
 
-                _ = try await retrieveWeeklyMealPlan() 
             } catch {
                 
             }
@@ -148,7 +149,7 @@ class UserViewModel: ObservableObject {
 
     
     // Update user goal function
-    func updateUserGoal(newGoal: String) async {
+    func updateUserGoal(newGoal: String, goalWeight: String) async {
         guard let userId = userSession?.uid else {
             print("User is not authenticated.")
             return
@@ -156,6 +157,7 @@ class UserViewModel: ObservableObject {
         
         // update the new goal
         self.userModel?.goal = newGoal
+        self.userModel?.goalWeight = goalWeight
         
         do {
             // Encode the updated user model
@@ -196,10 +198,21 @@ class UserViewModel: ObservableObject {
     }
     
     func createMealPlan() -> [String: [MealModel]] {
-        // Calculate total calories needed based on user model
         guard let userModel = userModel, let calories = Double(userModel.calories) else {
             print("User model or calories not available.")
             return mealPlan
+        }
+        
+        let userGoal = userModel.goal
+
+        let calorieMultiplier: Double
+        switch userGoal {
+        case "Gain Weight":
+            calorieMultiplier = 1.2 // 20% increase
+        case "Loose Weight":
+            calorieMultiplier = 0.8 // 20% decrease
+        default: // "Maintain Weight" or unknown goal
+            calorieMultiplier = 1.0 // No adjustment
         }
         
         // Calculate meal plan for each meal type
@@ -237,32 +250,27 @@ class UserViewModel: ObservableObject {
                 case "Vegetarian":
                     return meal.vegetarian == true
                 default:
-                    return true // Include if user's diet preference is invalid
+                    return true
                 }
             }
             
-            let totalCaloriesForType = mealsForDietAndType.reduce(0.0) { $0 + Double($1.calories) }
+            let totalCaloriesForType = calories * calorieMultiplier
+
             var selectedMeals: [MealModel] = []
-            var remainingCalories = calories
-            
+            var remainingCalories = totalCaloriesForType
+
             // Shuffle the meals for variety
             let shuffledMeals = mealsForDietAndType.shuffled()
-            
-            // Select up to 2 meals for this meal type
-            var closestCaloriesDifference = Double.infinity
+
+            // Select meals until the remaining calories allow
             for meal in shuffledMeals {
-                if selectedMeals.count < 2 && remainingCalories - Double(meal.calories) >= 0 {
+                if remainingCalories - Double(meal.calories) >= 0 {
                     selectedMeals.append(meal)
                     remainingCalories -= Double(meal.calories)
-                    
-                    // Update closestCaloriesDifference if necessary
-                    let currentDifference = abs(totalCaloriesForType - (calories - remainingCalories))
-                    if currentDifference < closestCaloriesDifference {
-                        closestCaloriesDifference = currentDifference
-                    }
+                } else {
+                    break
                 }
             }
-            
             mealPlan[mealType] = selectedMeals
         }
         
@@ -276,6 +284,18 @@ class UserViewModel: ObservableObject {
             return mealPlanForNextDay
         }
         
+        let userGoal = userModel.goal
+
+        let calorieMultiplier: Double
+        switch userGoal {
+        case "Gain Weight":
+            calorieMultiplier = 1.2 // 20% increase
+        case "Loose Weight":
+            calorieMultiplier = 0.8 // 20% decrease
+        default: // "Maintain Weight" 
+            calorieMultiplier = 1.0 // No adjustment
+        }
+        
         // Calculate meal plan for each meal type
         let mealTypes = ["breakfast", "lunch", "dinner"]
         for mealType in mealTypes {
@@ -315,28 +335,23 @@ class UserViewModel: ObservableObject {
                 }
             }
             
-            let totalCaloriesForType = mealsForDietAndType.reduce(0.0) { $0 + Double($1.calories) }
+            let totalCaloriesForType = calories * calorieMultiplier
+
             var selectedMeals: [MealModel] = []
-            var remainingCalories = calories
-            
+            var remainingCalories = totalCaloriesForType
+
             // Shuffle the meals for variety
             let shuffledMeals = mealsForDietAndType.shuffled()
-            
-            // Select up to 2 meals for this meal type
-            var closestCaloriesDifference = Double.infinity
+
+            // Select meals until the remaining calories allow
             for meal in shuffledMeals {
-                if selectedMeals.count < 2 && remainingCalories - Double(meal.calories) >= 0 {
+                if remainingCalories - Double(meal.calories) >= 0 {
                     selectedMeals.append(meal)
                     remainingCalories -= Double(meal.calories)
-                    
-                    // Update closestCaloriesDifference if necessary
-                    let currentDifference = abs(totalCaloriesForType - (calories - remainingCalories))
-                    if currentDifference < closestCaloriesDifference {
-                        closestCaloriesDifference = currentDifference
-                    }
+                } else {
+                    break
                 }
             }
-            
             mealPlanForNextDay[mealType] = selectedMeals
         }
         
@@ -442,15 +457,38 @@ class UserViewModel: ObservableObject {
         await fetchMealsForMealType(mealType: "dinner")
     }
     
-    func saveDailyMealPlan(date: Date, mealPlan: [String: [MealModel]]) {
+    func addDummyFieldToUserMealsCollection() {
         guard let userId = userModel?.id else {
             print("User ID not found")
             return
         }
+
+        let dummyData: [String: Any] = ["dummyField": "dummyValue"] // Define your dummy field here
+
+        let docRef = db.collection("userMeals").document(userId)
+
+        docRef.setData(dummyData) { error in
+            if let error = error {
+                print("Error adding dummy field: \(error.localizedDescription)")
+            } else {
+                //print("Dummy field added successfully")
+            }
+        }
+    }
+
+    func saveDailyMealPlan(date: Date, mealPlan: [String: [MealModel]]) {
+        // Call the function to add the dummy field
+        addDummyFieldToUserMealsCollection()
+
+        // Rest of the function remains the same
+        guard let userId = userModel?.id else {
+            print("User ID not found")
+            return
+        }
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
-        print(dateString)
 
         let docRef = db.collection("userMeals").document(userId).collection("dailyMealPlans").document(dateString)
 
@@ -462,13 +500,17 @@ class UserViewModel: ObservableObject {
             docRef.setData(firestoreMealPlan)
         }
     }
-    
+
     func saveWeeklyMealPlan(weeklyMealPlan: [String: [MealModel]]) {
+        // Call the function to add the dummy field
+        addDummyFieldToUserMealsCollection()
+
+        // Rest of the function remains the same
         guard let userId = userModel?.id else {
             print("User ID not found")
             return
         }
-
+        
         // Prepare weekly plan data (directly update the dictionary)
         var weeklyPlanData: [String: [[String: Any]]] = [:]
         for (day, meals) in weeklyMealPlan {
@@ -482,19 +524,19 @@ class UserViewModel: ObservableObject {
         }
     }
 
+
     func retrieveWeeklyMealPlan() async throws -> [String: [MealModel]] {
         guard let userId = userModel?.id else {
             print("User ID not found")
             return [:] // Return an empty plan
         }
-
+        
         let docRef = db.collection("userMeals").document(userId).collection("weeklyMealPlans").document("currentWeek")
 
         do {
             let snapshot = try await docRef.getDocument()
             if snapshot.exists, let data = snapshot.data() {
                 if let firestoreMealPlan = data as? [String: [[String: Any]]] {
-                    
                     // Convert the retrieved data to your MealModel format
                     let weeklyMealPlan = firestoreMealPlan.mapValues { mealsData in
                         mealsData.compactMap { MealModel(from: $0) }

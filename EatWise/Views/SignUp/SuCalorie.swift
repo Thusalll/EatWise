@@ -130,7 +130,7 @@ struct SuCalorie: View {
                         Text("Calculate Calories")
                             .padding()
                             .foregroundStyle(.white)
-                            .background(.primaryGreen)
+                            .background(.primaryGreen.opacity(selectedGender == 0 ? 0.3 : 1.0))
                             .cornerRadius(10)
                             .padding([.bottom], 40)
                     })
@@ -140,7 +140,7 @@ struct SuCalorie: View {
                         if (!totalCalories.isEmpty){
                             Text("Calories: \(totalCalories)")
                                 .font(
-                                    Font.custom("Nunito-ExtraBold", size: 30)
+                                    Font.custom("Nunito-ExtraBold", size: 24)
                                 )
                                 .foregroundColor(Color("TextColor"))
                                 .frame(height: 63, alignment: .center)
@@ -157,7 +157,10 @@ struct SuCalorie: View {
                         } else {
                             return
                         }
-                    })
+                    }, 
+                           color: .primaryGreen.opacity(totalCalories.isEmpty ? 0.3 : 1.0)
+                    )
+                    .disabled(totalCalories.isEmpty)
                     .padding([.top], 150)
                     .padding([.bottom], 5)
                     

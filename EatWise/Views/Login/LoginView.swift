@@ -35,18 +35,20 @@ struct LoginView: View {
                     // Email Textfield
                     textField(text: $email, placeholder: "Email")
                         .textInputAutocapitalization(.never)
-                        .padding([.bottom], 50)
+                        .padding([.bottom], 10)
                     
                     // Password Textfield
                     textField(text: $password, placeholder: "Password", isSecureField: true)
-                    .padding([.bottom], 80)
+                        .padding([.bottom], 100)
                     
                     // Login Button
                     button(text: "Login", action: {
                         Task{
                             try await userViewModel.logIn(withEmail: email, password: password)
                         }
-                    })
+                    },
+                           color: .primaryGreen
+                    )
                     
                     Spacer()
                     
@@ -64,7 +66,7 @@ struct LoginView: View {
                     }
                 }
                 .padding([.top, .horizontal], 40)
-            .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(true)
             }
         }
     }

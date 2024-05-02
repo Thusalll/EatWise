@@ -47,6 +47,7 @@ struct WeeklyPlanView: View {
                 }
             }
             .padding([.horizontal, .bottom])
+
             
             if let mealsForSelectedDate = userViewModel.weeklyMealPlan[selectedDateIndex] {
                 VStack(spacing: 16) {

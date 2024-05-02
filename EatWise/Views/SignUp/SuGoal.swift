@@ -68,32 +68,29 @@ struct SuGoal: View {
                 }
                 .padding([.top, .bottom])
                 
-                HStack {
-                    textField(text: $goalWeight, placeholder: "Weight")
-                        .keyboardType(.decimalPad)
-                        .padding(.trailing)
-                    Picker("Select Height", selection: $selectedWeightType) {
-                        Text("Kg").tag(1)
-                        Text("lbs").tag(2)
+                if selectedOption == "Lose Weight" || selectedOption == "Gain Weight"{
+                    HStack {
+                        textField(text: $goalWeight, placeholder: "Weight")
+                            .keyboardType(.decimalPad)
+                            .padding(.trailing)
+                        Picker("Select Height", selection: $selectedWeightType) {
+                            Text("Kg").tag(1)
+                            Text("lbs").tag(2)
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
                     }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
-                
-                
+
                 // Next Button
                 button(text: "Next", action: {
-                    if selectedWeightType == 1 {
-                        goalWeight = goalWeight + " kg"
-                    } else {
-                        goalWeight = goalWeight + " lbs"
-                    }
-                    
                     goal = selectedOption ?? ""
-                    if !goal.isEmpty && !goalWeight.isEmpty{
-                        print(goal)
+                    if !goal.isEmpty{
                         presentNextView.toggle()
                     }
-                })
+                }, 
+                       color: .primaryGreen.opacity(((selectedOption?.isEmpty) == nil) ? 0.3 : 1.0)
+                )
+                .disabled((selectedOption?.isEmpty) == nil)
                 .padding([.top], 40)
                 .padding([.bottom], 5)
                 
