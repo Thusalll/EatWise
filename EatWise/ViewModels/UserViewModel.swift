@@ -16,6 +16,7 @@ class UserViewModel: ObservableObject {
     @Published var mealModel: [MealModel] = []
     @Published var mealPlan: [String: [MealModel]] = [:]
     @Published var mealPlanForNextDay: [String: [MealModel]] = [:] // Store next day's plan
+    @Published var mealPlanForPreviousDay: [String: [MealModel]] = [:] // Store previous day's plan
     @Published var weeklyMealPlan: [String: [MealModel]] = [:]
     @Published var selectedMeal: MealModel?
     let db = Firestore.firestore()
@@ -58,6 +59,23 @@ class UserViewModel: ObservableObject {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
             self.userSession = result.user
             await fetchUser()
+            Task {
+                do {
+                    await fetchMeals()
+
+                    let currentDate = Date()
+                    try await retrieveDailyMealPlan(date: currentDate)
+
+                    _ = try await retrieveWeeklyMealPlan()
+                    
+                    // Calculate tomorrow's date
+                    let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: currentDate)!
+                    try await retrieveNextDayMealPlan(date: tomorrow)
+
+                } catch {
+                    
+                }
+            }
         } catch {
             print("DEBUG: Failed to Log in with error \(error.localizedDescription)")
         }
@@ -140,7 +158,7 @@ class UserViewModel: ObservableObject {
             // Update the user document in Firestore
             try await Firestore.firestore().collection("users").document(userId).setData(encodedUser)
 
-            // Fetch the updated user data (if needed)
+            // Fetch the updated user data
             await fetchUser()
         } catch {
             print("Failed to update user allergies: \(error.localizedDescription)")
@@ -278,7 +296,6 @@ class UserViewModel: ObservableObject {
     }
     
     func createMealPlanNextDay() -> [String: [MealModel]] {
-        // Calculate total calories needed based on user model
         guard let userModel = userModel, let calories = Double(userModel.calories) else {
             print("User model or calories not available.")
             return mealPlanForNextDay
@@ -321,7 +338,7 @@ class UserViewModel: ObservableObject {
             
             let mealsForDietAndType = mealsForType.filter { meal in
                 guard let userDiet = self.userModel?.diet else {
-                    return true // Include if user's diet preference is not specified
+                    return true
                 }
                 switch userDiet {
                 case "Balanced":
@@ -331,7 +348,7 @@ class UserViewModel: ObservableObject {
                 case "Vegetarian":
                     return meal.vegetarian == true
                 default:
-                    return true // Include if user's diet preference is invalid
+                    return true
                 }
             }
             
@@ -375,7 +392,7 @@ class UserViewModel: ObservableObject {
         
         let mealsForDietAndType = mealsForType.filter { meal in
             guard let userDiet = self.userModel?.diet else {
-                return true // Include if user's diet preference is not specified
+                return true
             }
             switch userDiet {
             case "Balanced":
@@ -385,7 +402,7 @@ class UserViewModel: ObservableObject {
             case "Vegetarian":
                 return meal.vegetarian == true
             default:
-                return true // Include if user's diet preference is invalid
+                return true 
             }
         }
         
@@ -457,13 +474,14 @@ class UserViewModel: ObservableObject {
         await fetchMealsForMealType(mealType: "dinner")
     }
     
+    // Add dummy field to the usermeals collection
     func addDummyFieldToUserMealsCollection() {
         guard let userId = userModel?.id else {
             print("User ID not found")
             return
         }
 
-        let dummyData: [String: Any] = ["dummyField": "dummyValue"] // Define your dummy field here
+        let dummyData: [String: Any] = ["dummyField": "dummyValue"]
 
         let docRef = db.collection("userMeals").document(userId)
 
@@ -480,7 +498,6 @@ class UserViewModel: ObservableObject {
         // Call the function to add the dummy field
         addDummyFieldToUserMealsCollection()
 
-        // Rest of the function remains the same
         guard let userId = userModel?.id else {
             print("User ID not found")
             return
@@ -505,13 +522,12 @@ class UserViewModel: ObservableObject {
         // Call the function to add the dummy field
         addDummyFieldToUserMealsCollection()
 
-        // Rest of the function remains the same
         guard let userId = userModel?.id else {
             print("User ID not found")
             return
         }
         
-        // Prepare weekly plan data (directly update the dictionary)
+        // Prepare weekly plan data
         var weeklyPlanData: [String: [[String: Any]]] = [:]
         for (day, meals) in weeklyMealPlan {
             weeklyPlanData[day] = meals.map { $0.dictionaryRepresentation() }
@@ -520,7 +536,7 @@ class UserViewModel: ObservableObject {
         let docRef = db.collection("userMeals").document(userId).collection("weeklyMealPlans").document("currentWeek")
 
         do {
-            docRef.setData(weeklyPlanData) // Use the prepared weeklyPlanData
+            docRef.setData(weeklyPlanData)
         }
     }
 
@@ -537,7 +553,7 @@ class UserViewModel: ObservableObject {
             let snapshot = try await docRef.getDocument()
             if snapshot.exists, let data = snapshot.data() {
                 if let firestoreMealPlan = data as? [String: [[String: Any]]] {
-                    // Convert the retrieved data to your MealModel format
+                    // Convert the retrieved data to MealModel format
                     let weeklyMealPlan = firestoreMealPlan.mapValues { mealsData in
                         mealsData.compactMap { MealModel(from: $0) }
                     }
@@ -550,12 +566,10 @@ class UserViewModel: ObservableObject {
                 throw WeeklyPlanError.planNotFound
             }
         } catch {
-            throw error // Handle or propagate as needed
+            throw error
         }
     }
 
-
-    // Example of a custom error type
     enum WeeklyPlanError: Error {
         case conversionError
         case planNotFound
@@ -584,16 +598,54 @@ class UserViewModel: ObservableObject {
                     }
 
                     self.mealPlan = mealPlan
-                    return // Assuming you want to return here if the data is retrieved
+                    return
                 } else {
-                    throw MealPlanError.conversionError // Create a custom error type (explained below)
+                    throw MealPlanError.conversionError
                 }
             } else {
                 throw MealPlanError.mealPlanNotFound
             }
 
         } catch {
-            throw error // Propagate or handle the error specifically
+            throw error 
+        }
+    }
+
+    func retrievePreviousMealPlan(date: Date) async throws {
+        guard let userId = self.userModel?.id else {
+            print("User ID not found")
+            return
+        }
+        
+        mealPlanForPreviousDay = [:]
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        let docRef = db.collection("userMeals").document(userId).collection("dailyMealPlans").document(dateString)
+
+        do {
+            let snapshot = try await docRef.getDocument()
+            
+            if snapshot.exists {
+                if let data = snapshot.data(),
+                   let firestoreMealPlan = data as? [String: [[String: Any]]] {
+
+                    let mealPlan = firestoreMealPlan.mapValues { mealsData in
+                        mealsData.compactMap { MealModel(from: $0) }
+                    }
+
+                    self.mealPlanForPreviousDay = mealPlan
+                    return
+                } else {
+                    throw MealPlanError.conversionError
+                }
+            } else {
+                throw MealPlanError.mealPlanNotFound
+            }
+
+        } catch {
+            throw error
         }
     }
     

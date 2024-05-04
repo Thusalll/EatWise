@@ -41,5 +41,5 @@ struct WeightGraph: View {
 
 #Preview {
     WeightGraph()
-        .environmentObject(UserViewModel()) // Provide a fresh instance of UserViewModel for preview
+        .environmentObject(UserViewModel()) 
 }

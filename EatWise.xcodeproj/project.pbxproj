@@ -10,6 +10,7 @@
 		F21390012BDAE9E100A22A38 /* MealModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21390002BDAE9E100A22A38 /* MealModel.swift */; };
 		F21390032BDD111500A22A38 /* SuCalorie.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21390022BDD111500A22A38 /* SuCalorie.swift */; };
 		F2577AAD2BE4314A00B2676D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2577AAC2BE4314A00B2676D /* Launch Screen.storyboard */; };
+		F2577AAF2BE45C3A00B2676D /* MealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2577AAE2BE45C3A00B2676D /* MealViewModel.swift */; };
 		F265EEA92BD716140015139C /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEA82BD716140015139C /* UserModel.swift */; };
 		F265EEAC2BD7183A0015139C /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAB2BD7183A0015139C /* UserViewModel.swift */; };
 		F265EEB02BD7E75B0015139C /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EEAF2BD7E75B0015139C /* RootView.swift */; };
@@ -75,6 +76,7 @@
 		F21390002BDAE9E100A22A38 /* MealModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealModel.swift; sourceTree = "<group>"; };
 		F21390022BDD111500A22A38 /* SuCalorie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuCalorie.swift; sourceTree = "<group>"; };
 		F2577AAC2BE4314A00B2676D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		F2577AAE2BE45C3A00B2676D /* MealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealViewModel.swift; sourceTree = "<group>"; };
 		F265EEA82BD716140015139C /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		F265EEAB2BD7183A0015139C /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		F265EEAF2BD7E75B0015139C /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				F265EEAB2BD7183A0015139C /* UserViewModel.swift */,
+				F2577AAE2BE45C3A00B2676D /* MealViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				F2815F172BD53E86004BFE37 /* DietView.swift in Sources */,
 				F2815F0A2BD539E2004BFE37 /* NewPlan.swift in Sources */,
 				F2815E992BD44A84004BFE37 /* EatWiseApp.swift in Sources */,
+				F2577AAF2BE45C3A00B2676D /* MealViewModel.swift in Sources */,
 				F2815EF12BD531FC004BFE37 /* SuBmi.swift in Sources */,
 				F2815F082BD539DA004BFE37 /* RecipeView.swift in Sources */,
 				F2815F152BD53E79004BFE37 /* SaveButton.swift in Sources */,
@@ -571,12 +575,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EatWise/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EatWise;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -584,9 +590,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = thusalll.EatWise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -602,12 +611,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EatWise/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = EatWise;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,9 +626,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = thusalll.EatWise;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

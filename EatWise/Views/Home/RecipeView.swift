@@ -56,6 +56,39 @@ struct RecipeView: View {
                     .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
                     
                     VStack(alignment: .leading){
+                        Text("Nutrition Information")
+                            .font(
+                                Font.custom("Nunito-Medium", size: 28)
+                            )
+                            .foregroundColor(Color.primaryGreen)
+                            .padding([.bottom], 5)
+                        HStack{
+                            Text("Calories - \(selectedMeal.calories)")
+                                .font(Font.custom("Nunito", size: 18))
+                                .foregroundColor(.black)
+                            Spacer()
+                            Text("Carbs - \(selectedMeal.carbs)g")
+                                .font(Font.custom("Nunito", size: 18))
+                                .foregroundColor(.black)
+                        }.padding(.horizontal, 20)
+                        HStack{
+                            Text("Fat - \(selectedMeal.fat)g")
+                                .font(Font.custom("Nunito", size: 18))
+                                .foregroundColor(.black)
+                            Spacer()
+                            Text("Protein - \(selectedMeal.protein)g")
+                                .font(Font.custom("Nunito", size: 18))
+                                .foregroundColor(.black)
+                        }.padding(.horizontal, 20)
+
+                    }
+                    .padding()
+                    .frame(width: 370, alignment: .leading)
+                    .background(Color("SecondaryGreen"))
+                    .cornerRadius(10)
+                    .shadow(color: .gray.opacity(0.2), radius: 4, x: 0, y: 2)
+                    
+                    VStack(alignment: .leading){
                         Text("Ingredients")
                             .font(
                                 Font.custom("Nunito-Medium", size: 28)

@@ -71,6 +71,13 @@ struct GoalView: View {
                     SaveButton(text: "Save", action: {
                         Task{
                             await userViewModel.updateUserGoal(newGoal: selectedOption ?? "selectedOption", goalWeight: goalWeight)
+                            
+                                _ = userViewModel.createMealPlan()
+                                userViewModel.saveDailyMealPlan(date: Date(), mealPlan: userViewModel.mealPlan)
+                            
+                                _ = userViewModel.generateWeeklyMealPlan()
+                                userViewModel.saveWeeklyMealPlan(weeklyMealPlan: userViewModel.weeklyMealPlan)
+                            
                             // Dismiss the GoalView and go back to the previous view (ProfileView)
                             presentationMode.wrappedValue.dismiss()
                         }

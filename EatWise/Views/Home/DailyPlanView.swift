@@ -48,6 +48,11 @@ struct DailyPlanView: View {
                         HStack {
                             Button(action: {
                                 self.selectedDate = Calendar.current.date(byAdding: .day, value: -1, to: self.selectedDate)!
+                                Task{
+                                    do{
+                                        try await userViewModel.retrievePreviousMealPlan(date: self.selectedDate)
+                                    }
+                                }
                             }) {
                                 Image(systemName: "chevron.left")
                                     .imageScale(.large)
@@ -73,7 +78,8 @@ struct DailyPlanView: View {
                         .padding(.top)
                         
                         if Calendar.current.isDate(selectedDate, inSameDayAs: Date()) {
-                            ForEach(userViewModel.mealPlan.keys.sorted(), id: \.self) { mealType in
+                            let mealOrder = ["breakfast", "lunch", "dinner"]
+                            ForEach(mealOrder, id: \.self) { mealType in
                                 if let meals = userViewModel.mealPlan[mealType], !meals.isEmpty {
                                         if let firstMeal = meals.first, let secondMeal = meals.dropFirst().first {
                                             if let firstImageURL = URL(string: firstMeal.image), let secondImageURL = URL(string: secondMeal.image) {
@@ -112,9 +118,7 @@ struct DailyPlanView: View {
                                             }
                                         }
                                     }  else {
-                                    Text("No meals available for \(mealType)")
-                                        .foregroundColor(.secondary)
-                                        .padding(.top)
+                                    EmptyView()
                                 }
                             }
                         }
@@ -138,7 +142,8 @@ struct DailyPlanView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                                 .padding(.vertical)
                             } else {
-                                ForEach(userViewModel.mealPlanForNextDay.keys.sorted(), id: \.self) { mealType in
+                                let mealOrder = ["breakfast", "lunch", "dinner"]
+                                ForEach(mealOrder, id: \.self) { mealType in
                                     if let meals = userViewModel.mealPlanForNextDay[mealType], !meals.isEmpty {
                                         if let firstMeal = meals.first, let secondMeal = meals.dropFirst().first {
                                             if let firstImageURL = URL(string: firstMeal.image), let secondImageURL = URL(string: secondMeal.image) {
@@ -163,10 +168,7 @@ struct DailyPlanView: View {
                                                             presentNextView.toggle()
                                                         }
                                                     },
-                                                    regenerateMeal: {
-                                                        userViewModel.mealPlanForNextDay[mealType] = userViewModel.generateMealsForMealType(mealType)
-                                                        userViewModel.saveDailyMealPlan(date: self.selectedDate, mealPlan: userViewModel.mealPlanForNextDay)
-                                                    },
+                                                    regenerateMeal: {},
                                                     markMeal: {}
                                                 )
                                                 .padding(.top)
@@ -182,27 +184,9 @@ struct DailyPlanView: View {
 
                         }
                         else if Calendar.current.isDate(selectedDate, inSameDayAs: Calendar.current.date(byAdding: .day, value: -1, to: Date())!) {
-                            if userViewModel.mealPlanForNextDay.isEmpty{
-                                Button(action: {
-                                    _ = userViewModel.createMealPlanNextDay()
-                                    userViewModel.saveDailyMealPlan(date: self.selectedDate, mealPlan: userViewModel.mealPlanForNextDay)
-                                }, label: {
-                                    Text("Generate\na New\n Daily Plan")
-                                })
-                                .frame(width: 180, height: 226)
-                                .font(
-                                    Font.custom("Nunito", size: 29)
-                                        .weight(.semibold)
-                                )
-                                .foregroundStyle(.primaryGreen)
-                                .background(
-                                    Color.secondaryGreen
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                                .padding(.vertical)
-                            } else {
-                                ForEach(userViewModel.mealPlanForNextDay.keys.sorted(), id: \.self) { mealType in
-                                    if let meals = userViewModel.mealPlanForNextDay[mealType], !meals.isEmpty {
+                            let mealOrder = ["breakfast", "lunch", "dinner"]
+                            ForEach(mealOrder, id: \.self) { mealType in
+                                    if let meals = userViewModel.mealPlanForPreviousDay[mealType], !meals.isEmpty {
                                         if let firstMeal = meals.first, let secondMeal = meals.dropFirst().first {
                                             if let firstImageURL = URL(string: firstMeal.image), let secondImageURL = URL(string: secondMeal.image) {
                                                 MealCard(
@@ -226,10 +210,7 @@ struct DailyPlanView: View {
                                                             presentNextView.toggle()
                                                         }
                                                     },
-                                                    regenerateMeal: {
-                                                        userViewModel.mealPlanForNextDay[mealType] = userViewModel.generateMealsForMealType(mealType)
-                                                        userViewModel.saveDailyMealPlan(date: self.selectedDate, mealPlan: userViewModel.mealPlanForNextDay)
-                                                    },
+                                                    regenerateMeal: {},
                                                     markMeal: {}
                                                 )
                                                 .padding(.top)
@@ -241,7 +222,7 @@ struct DailyPlanView: View {
                                         }
                                     }
                                 }
-                            }
+                            
 
                         }
                     } else{
@@ -260,23 +241,36 @@ struct DailyPlanView: View {
                             Spacer()
                             VStack{
                                 Button {
-                                    _ = userViewModel.createMealPlan()
-                                    _ = userViewModel.generateWeeklyMealPlan()
+                                    if selectedPlanType == 0 {
+                                        _ = userViewModel.createMealPlan()
+                                        userViewModel.saveDailyMealPlan(date: self.selectedDate, mealPlan: userViewModel.mealPlan)
+                                    }
                                     
-                                    userViewModel.saveDailyMealPlan(date: self.selectedDate, mealPlan: userViewModel.mealPlan)
-                                    userViewModel.saveWeeklyMealPlan(weeklyMealPlan: userViewModel.weeklyMealPlan)
+                                    if selectedPlanType == 1 {
+                                        _ = userViewModel.generateWeeklyMealPlan()
+                                        userViewModel.saveWeeklyMealPlan(weeklyMealPlan: userViewModel.weeklyMealPlan)
+                                    }
                                 } label: {
-                                    // 1
                                     HStack {
                                         Image(systemName: "arrow.2.circlepath")
                                         
-                                        
-                                        Text(userViewModel.mealPlan.isEmpty ? "Generate Plan" : "Regenerate All")
-                                            .font(
-                                                Font.custom("Nunito", size: 16)
-                                                    .weight(.bold)
-                                            )
-                                            .foregroundColor(.white)
+                                        if selectedPlanType == 0 {
+                                            Text(userViewModel.mealPlan.isEmpty ? "Generate Plan" : "Regenerate All")
+                                                .font(
+                                                    Font.custom("Nunito", size: 16)
+                                                        .weight(.bold)
+                                                )
+                                                .foregroundColor(.white)
+                                        }
+                                        if selectedPlanType == 1 {
+                                            Text(userViewModel.weeklyMealPlan.isEmpty ? "Generate Plan" : "Regenerate All")
+                                                .font(
+                                                    Font.custom("Nunito", size: 16)
+                                                        .weight(.bold)
+                                                )
+                                                .foregroundColor(.white)
+                                        }
+
                                     }
                                     .padding()
                                     .background(Color.primaryGreen)

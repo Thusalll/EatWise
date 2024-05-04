@@ -60,6 +60,13 @@ struct DietView: View {
                     SaveButton(text: "Save", action: {
                         Task{
                             await userViewModel.updateUserDiet(newDiet: selectedOption ?? "")
+                            _ = userViewModel.createMealPlan()
+                            userViewModel.saveDailyMealPlan(date: Date(), mealPlan: userViewModel.mealPlan)
+                        
+                            _ = userViewModel.generateWeeklyMealPlan()
+                            userViewModel.saveWeeklyMealPlan(weeklyMealPlan: userViewModel.weeklyMealPlan)
+                            
+                            // Dismiss the DietView and go back to the previous view (ProfileView)
                             presentationMode.wrappedValue.dismiss()
                         }
                     })
