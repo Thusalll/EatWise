@@ -59,7 +59,6 @@ struct MealCard: View {
                         .frame(width: 53, height: 50)
                         .background(
                             AsyncImage(url: firstImageName) { phase in
-                                // Handle loading, success, failure states here
                                 if let image = phase.image{
                                     image
                                         .resizable()
@@ -102,7 +101,6 @@ struct MealCard: View {
                         .frame(width: 53, height: 50)
                         .background(
                             AsyncImage(url: secondImageName) { phase in
-                                // Handle loading, success, failure states here
                                 if let image = phase.image{
                                     image
                                         .resizable()

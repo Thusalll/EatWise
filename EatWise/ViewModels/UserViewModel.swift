@@ -102,6 +102,10 @@ class UserViewModel: ObservableObject {
             try Auth.auth().signOut()
             self.userSession = nil // wipes out user session and navigates to the login view
             self.userModel = nil // wipes out current user data
+            self.mealPlan = [:]
+            self.weeklyMealPlan = [:]
+            self.mealPlanForNextDay = [:]
+            self.mealPlanForPreviousDay = [:]
         } catch{
             print("DEBUG: FAILED TO SIGN OUT WITH ERROR - \(error.localizedDescription)")
         }
@@ -229,7 +233,7 @@ class UserViewModel: ObservableObject {
             calorieMultiplier = 1.2 // 20% increase
         case "Loose Weight":
             calorieMultiplier = 0.8 // 20% decrease
-        default: // "Maintain Weight" or unknown goal
+        default: // "Maintain Weight"
             calorieMultiplier = 1.0 // No adjustment
         }
         
@@ -258,7 +262,7 @@ class UserViewModel: ObservableObject {
             
             let mealsForDietAndType = mealsForType.filter { meal in
                 guard let userDiet = self.userModel?.diet else {
-                    return true // Include if user's diet preference is not specified
+                    return true
                 }
                 switch userDiet {
                 case "Balanced":

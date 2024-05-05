@@ -20,8 +20,6 @@ struct RecipeView: View {
                             .frame(height: 355)
                             .background(
                                 AsyncImage(url: URL(string: selectedMeal.image)){ phase in
-                                    // You can add placeholder or progress view here
-                                    // Example:
                                     if let image = phase.image {
                                         image
                                             .resizable()
